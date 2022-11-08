@@ -5,6 +5,7 @@ declare namespace App {
 	interface Locals {
 		user: {
 			twitter_id: string
+			access_token: string
 		}
 	}
 	// interface PageData {}

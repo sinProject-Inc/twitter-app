@@ -13,22 +13,18 @@
 </script>
 
 <h1>Welcome to Twitter App</h1>
-<p>Visit <a href="https://github.com/sinProject-Inc/twitter-app">twitter-app</a> to read the documentation</p>
+<p>
+	Visit <a href="https://github.com/sinProject-Inc/twitter-app">twitter-app</a> to read the documentation
+</p>
 
-{#if $page.data.user}
-	<form action="/sign_out" method="POST">
-		<button type="submit">Log out</button>
-	</form>
-{:else}
-	<form method="POST" action="/sign_in" id="sign_in">
-		<div class="sign_in" on:click={signInWithTwitter} on:keypress={signInWithTwitter}>
-			<div class="flex_row_twitter">
-				<img src="./twitter_social_icon_circle_blue.svg" alt="" width="20px" />
-				<div>Sign in with Twitter</div>
-			</div>
+<form method="POST" action="/sign_in" id="sign_in">
+	<div class="sign_in" on:click={signInWithTwitter} on:keypress={signInWithTwitter}>
+		<div class="flex_row_twitter">
+			<img src="./twitter_social_icon_circle_blue.svg" alt="" width="20px" />
+			<div>Sign in with Twitter</div>
 		</div>
-	</form>
-{/if}
+	</div>
+</form>
 
 <style>
 	.sign_in {

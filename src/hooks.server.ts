@@ -16,6 +16,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	event.locals.user = {
 		twitter_id: auth_token.user.twitter_id,
+		access_token: auth_token.user.access_token,
 	}
 
 	return await resolve(event)
