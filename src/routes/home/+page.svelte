@@ -24,7 +24,7 @@
 </svelte:head>
 
 <form action="/sign_out" method="POST">
-	<button type="submit">Log out</button>
+	<button type="submit">Sign out</button>
 </form>
 
 <br />
