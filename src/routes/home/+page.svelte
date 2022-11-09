@@ -36,8 +36,8 @@
 		<img class="avatar" src={timeline_item.user?.profile_image_url ?? ''} alt="profile" />
 		<div class="text_column">
 			<div class="username_row">
-				<div class="name">{timeline_item.user?.name}</div>
-				<div class="username">@{timeline_item.user?.username}</div>
+				<div class="name overflow_ellipsis">{timeline_item.user?.name}</div>
+				<div class="username overflow_ellipsis">@{timeline_item.user?.username}</div>
 				<div class="time">{timeline_item.tweet.created_at}</div>
 			</div>
 			{timeline_item.tweet.text}
@@ -68,6 +68,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
+		min-width: 0;
 	}
 
 	.username_row {
@@ -75,6 +76,12 @@
 		flex-direction: row;
 		gap: 8px;
 		align-items: center;
+	}
+
+	.overflow_ellipsis {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.name {
@@ -87,5 +94,6 @@
 
 	.time {
 		color: #666;
+		white-space: nowrap;
 	}
 </style>
