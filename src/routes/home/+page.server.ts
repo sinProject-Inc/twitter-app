@@ -7,16 +7,25 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const client = new Client(locals.user.access_token)
 
-	const tweets = await client.tweets.usersIdTimeline(locals.user.twitter_id)
-	// console.log(tweets)
+	try {
+		const tweets = await client.tweets.usersIdTimeline(locals.user.twitter_id, {
+			// max_results: 30,
+			expansions: ['author_id'],
+			'tweet.fields': ['created_at'],
+			'user.fields': ['profile_image_url'],
+			// 'tweet.fields': ['author_id'],
+			// 'tweet.fields': ['created_at', 'entities', 'public_metrics'],
+		})
 
-	// const t2 = await client.tweets.usersIdTweets(locals.user.twitter_id)
-	// console.log('t2--------------------', t2)
+		console.log(tweets)
 
-	// const tweet = await client.tweets.findTweetById('25')
-	// console.log(tweet)
+		console.log(tweets.includes?.users)
 
-	return {
-		tweets,
+	 return {
+		tweets
+	 }
+	}
+	catch (error) {
+		throw redirect(302, '/sign_out')
 	}
 }
