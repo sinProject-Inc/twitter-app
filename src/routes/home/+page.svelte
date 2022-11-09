@@ -13,10 +13,15 @@
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	}, new Map<string, any>())
 
-
 	const timeline = tweets.map((tweet) => {
 		return { tweet: tweet, user: userMap.get(tweet.author_id ?? '') }
 	})
+
+	function toLocalDate(date?: string): string {
+		if (!date) return ''
+
+		return new Date(date).toLocaleString('ja-JP')
+	}
 </script>
 
 <svelte:head>
@@ -38,7 +43,7 @@
 			<div class="username_row">
 				<div class="name overflow_ellipsis">{timeline_item.user?.name}</div>
 				<div class="username overflow_ellipsis">@{timeline_item.user?.username}</div>
-				<div class="time">{timeline_item.tweet.created_at}</div>
+				<div class="time">{toLocalDate(timeline_item.tweet.created_at)}</div>
 			</div>
 			{timeline_item.tweet.text}
 		</div>
