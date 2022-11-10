@@ -3,6 +3,7 @@
 		"autoincrement",
 		"datasource",
 		"instanceof",
+		"JSESSIONID",
 		"keypress",
 		"Meiryo",
 		"nowrap",

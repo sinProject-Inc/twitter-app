@@ -6,6 +6,7 @@ declare namespace App {
 		user: {
 			twitter_id: string
 			access_token: string
+			access_secret: string
 		}
 	}
 	// interface PageData {}

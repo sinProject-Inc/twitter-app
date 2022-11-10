@@ -3,15 +3,22 @@
 
 	export let data: PageData
 
-	console.log(data.tweets)
+	// console.log(data.tweets)
 
-	const tweets = data.tweets.data || []
-	const users = data.tweets.includes?.users || []
-	const userMap = users.reduce((map, user) => {
-		map.set(user.id, user)
-		return map
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	}, new Map<string, any>())
+	const home_timeline = data.home_timeline
+	const tweets = home_timeline.tweets
+	const users = home_timeline.includes.users
+
+	console.log('tweets ---------------', tweets)
+	console.log('users ---------------', users)
+
+	// const tweets = data.tweets.data || []
+	// const users = data.tweets.includes?.users || []
+	// const userMap = users.reduce((map, user) => {
+	// 	map.set(user.id, user)
+	// 	return map
+	// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+	// }, new Map<string, any>())
 
 	const timeline = tweets.map((tweet) => {
 		return { tweet: tweet, user: userMap.get(tweet.author_id ?? '') }
