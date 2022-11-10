@@ -3,19 +3,46 @@
 
 	export let data: PageData
 
-	console.log(data.tweets)
+	// console.log(data.tweets)
 
 	const tweets = data.tweets.data || []
 	const users = data.tweets.includes?.users || []
-	const userMap = users.reduce((map, user) => {
+	const referenced_tweets = data.tweets.includes?.tweets || []
+
+	const user_map = users.reduce((map, user) => {
 		map.set(user.id, user)
 		return map
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	}, new Map<string, any>())
 
+	const referenced_tweets_map = referenced_tweets.reduce((map, tweet) => {
+		map.set(tweet.id, tweet)
+		return map
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	}, new Map<string, any>())
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	function get_retweeted(tweet: any): any {
+		if (tweet.referenced_tweets) {
+			const referenced_tweet = tweet.referenced_tweets[0]
+
+			if (referenced_tweet?.type === 'retweeted') {
+				const retweeted_tweet = referenced_tweets_map.get(referenced_tweet.id)
+				const retweeted_user = user_map.get(retweeted_tweet?.author_id)
+
+				return { tweet: retweeted_tweet, user: retweeted_user }
+			}
+		}
+	}
+
 	const timeline = tweets.map((tweet) => {
-		return { tweet: tweet, user: userMap.get(tweet.author_id ?? '') }
+		const user = user_map.get(tweet.author_id ?? '')
+		const retweeted = get_retweeted(tweet)
+
+		return { tweet, user, retweeted }
 	})
+
+	console.log(timeline)
 
 	function toLocalDate(date?: string): string {
 		if (!date) return ''
@@ -45,14 +72,15 @@
 				<div class="username overflow_ellipsis">@{timeline_item.user?.username}</div>
 				<div class="time">{toLocalDate(timeline_item.tweet.created_at)}</div>
 			</div>
-			{timeline_item.tweet.text}
+			<!-- {timeline_item.tweet.text} -->
+			{timeline_item.tweet.referenced_tweets}
 		</div>
 	</div>
 {/each}
 
 <style>
 	:global(body) {
-		font-family: "Segoe UI", Meiryo, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+		font-family: 'Segoe UI', Meiryo, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 	}
 
 	.element {
