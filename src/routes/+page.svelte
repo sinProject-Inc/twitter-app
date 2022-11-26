@@ -3,7 +3,7 @@
 
 	console.log($page.data.user)
 
-	function signInWithTwitter(): void {
+	function sign_in_with_twitter(): void {
 		const form_element = document.getElementById('sign_in')
 
 		if (form_element instanceof HTMLFormElement) {
@@ -18,7 +18,7 @@
 </p>
 
 <form method="POST" action="/sign_in" id="sign_in">
-	<div class="sign_in" on:click={signInWithTwitter} on:keypress={signInWithTwitter}>
+	<div class="sign_in" on:click={sign_in_with_twitter} on:keypress={sign_in_with_twitter}>
 		<div class="flex_row_twitter">
 			<img src="./twitter_social_icon_circle_blue.svg" alt="" width="20px" />
 			<div>Sign in with Twitter</div>

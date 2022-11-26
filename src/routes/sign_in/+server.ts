@@ -53,11 +53,11 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 
 		// console.log(email)
 
-		const user = await Database.upsertUser(twitter_id, access_token)
+		const user = await Database.upsert_user(twitter_id, access_token)
 
 		if (!user) return new Response('No user', { status: 500 })
 
-		await Auth.signIn(user.id, cookies)
+		await Auth.sign_in(user.id, cookies)
 
 		throw redirect(302, '/')
 	} catch (error) {
