@@ -46,20 +46,20 @@
 
 	// console.log(timeline)
 
-	function toLocalDate(date?: string): string {
+	function to_local_date(date?: string): string {
 		if (!date) return ''
 
 		return new Date(date).toLocaleString('ja-JP')
 	}
 
-	function isRetweet(tweet: components['schemas']['Tweet']): boolean {
+	function is_retweet(tweet: components['schemas']['Tweet']): boolean {
 		return (
 			tweet.referenced_tweets?.some((referenced_tweet) => referenced_tweet.type === 'retweeted') ??
 			false
 		)
 	}
 
-	function getTargetTweet(tweet: components['schemas']['Tweet']): components['schemas']['Tweet'] {
+	function get_target_tweet(tweet: components['schemas']['Tweet']): components['schemas']['Tweet'] {
 		if (tweet.referenced_tweets) {
 			const referenced_tweet = tweet.referenced_tweets[0]
 
@@ -72,17 +72,17 @@
 		return tweet
 	}
 
-	function getUser(
+	function get_user(
 		tweet: components['schemas']['Tweet'],
-		isOriginal = false
+		is_original = false
 	): components['schemas']['User'] | undefined {
-		const target_tweet = isOriginal ? tweet : getTargetTweet(tweet)
+		const target_tweet = is_original ? tweet : get_target_tweet(tweet)
 
 		return user_map.get(target_tweet.author_id ?? '')
 	}
 
-	function getText(tweet: components['schemas']['Tweet']): string {
-		const target_tweet = getTargetTweet(tweet)
+	function get_text(tweet: components['schemas']['Tweet']): string {
+		const target_tweet = get_target_tweet(tweet)
 
 		return target_tweet.text ?? ''
 	}
@@ -104,21 +104,21 @@
 
 {#each tweets as tweet}
 	<div class="element">
-		{#if isRetweet(tweet)}
+		{#if is_retweet(tweet)}
 			<div class="retweet_row">
 				<div class="avatar_above"><div class="retweet"><Retweet /></div></div>
-				{getUser(tweet, true)?.name}さんがリツイートしました
+				{get_user(tweet, true)?.name}さんがリツイートしました
 			</div>
 		{/if}
 		<div class="tweet">
-			<img class="avatar" src={getUser(tweet)?.profile_image_url} alt="avatar" />
+			<img class="avatar" src={get_user(tweet)?.profile_image_url} alt="avatar" />
 			<div class="text_column">
 				<div class="username_row">
-					<div class="name overflow_ellipsis">{getUser(tweet)?.name}</div>
-					<div class="username overflow_ellipsis">@{getUser(tweet)?.username}</div>
-					<div class="time">{toLocalDate(tweet.created_at)}</div>
+					<div class="name overflow_ellipsis">{get_user(tweet)?.name}</div>
+					<div class="username overflow_ellipsis">@{get_user(tweet)?.username}</div>
+					<div class="time">{to_local_date(tweet.created_at)}</div>
 				</div>
-				{getText(tweet)}
+				{get_text(tweet)}
 			</div>
 		</div>
 	</div>

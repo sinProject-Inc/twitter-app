@@ -8,7 +8,7 @@ enum Roles {
 export const db = new prisma.PrismaClient()
 
 export class Database {
-	public static async upsertUser(twitter_id: string, access_token: string): Promise<User | undefined> {
+	public static async upsert_user(twitter_id: string, access_token: string): Promise<User | undefined> {
 		return await db.user.upsert({
 			where: { twitter_id },
 			update: { access_token },
@@ -16,7 +16,7 @@ export class Database {
 		})
 	}
 
-	public static async getAppSettingInt(key: string): Promise<number> {
+	public static async get_app_setting_int(key: string): Promise<number> {
 		const appSetting = await db.appSetting.findUnique({ where: { key } })
 		const number_value = Number(appSetting?.value)
 		const number_value_not_nan = Number.isNaN(number_value) ? 0 : number_value

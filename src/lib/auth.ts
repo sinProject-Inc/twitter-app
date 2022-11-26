@@ -4,11 +4,11 @@ import { CookiesManager } from "./cookies_manager"
 import { Database, db } from "./database"
 
 export class Auth {
-	public static async getSessionLifetimeSec(): Promise<number> {
-		return await Database.getAppSettingInt('session_lifetime_sec')
+	public static async get_session_lifetime_sec(): Promise<number> {
+		return await Database.get_app_setting_int('session_lifetime_sec')
 	}
 
-	public static getLimit(lifetime_sec: number): Date {
+	public static get_limit(lifetime_sec: number): Date {
 		const limit = new Date()
 
 		if (lifetime_sec == 0) console.warn('lifetime_sec is 0')
@@ -18,11 +18,11 @@ export class Auth {
 		return limit
 	}
 
-	public static async createAuthToken(
+	public static async create_auth_token(
 		user_id: number,
 		session_lifetime_sec: number
 	): Promise<AuthToken> {
-		const session_limit = await Auth.getLimit(session_lifetime_sec)
+		const session_limit = await Auth.get_limit(session_lifetime_sec)
 
 		const [auth_token] = await db.$transaction([
 			db.authToken.create({
@@ -36,21 +36,21 @@ export class Auth {
 		return auth_token
 	}
 
-	public static async signIn(user_id: number, cookies: Cookies): Promise<void> {
-		const session_lifetime_sec = await Auth.getSessionLifetimeSec()
-		const auth_token = await Auth.createAuthToken(user_id, session_lifetime_sec)
+	public static async sign_in(user_id: number, cookies: Cookies): Promise<void> {
+		const session_lifetime_sec = await Auth.get_session_lifetime_sec()
+		const auth_token = await Auth.create_auth_token(user_id, session_lifetime_sec)
 
-		new CookiesManager(cookies).setSessionId(auth_token.token)
+		new CookiesManager(cookies).set_session_id(auth_token.token)
 	}
 
-	public static async signOut(cookies: Cookies): Promise<void> {
+	public static async sign_out(cookies: Cookies): Promise<void> {
 		const cookiesManager = new CookiesManager(cookies)
 
 		await db.authToken.delete({ where: { token: cookiesManager.session_id } })
-		cookiesManager.deleteSessionId()
+		cookiesManager.delete_session_id()
 	}
 
-	public static async findAuthToken(session_id: string): Promise<
+	public static async find_auth_token(session_id: string): Promise<
 		| (AuthToken & {
 				user: User & {
 					role: Role
@@ -58,8 +58,8 @@ export class Auth {
 		  })
 		| null
 	> {
-		const session_lifetime_sec = await Auth.getSessionLifetimeSec()
-		const session_limit = Auth.getLimit(session_lifetime_sec)
+		const session_lifetime_sec = await Auth.get_session_lifetime_sec()
+		const session_limit = Auth.get_limit(session_lifetime_sec)
 
 		const auth_token = await db.authToken.findFirst({
 			where: {
@@ -78,7 +78,7 @@ export class Auth {
 		return auth_token
 	}
 
-	public static async updateAuthToken(auth_token_id: number): Promise<AuthToken> {
+	public static async update_auth_token(auth_token_id: number): Promise<AuthToken> {
 		const auth_token = await db.authToken.update({
 			where: { id: auth_token_id },
 			data: { updated_at: new Date() },
@@ -87,12 +87,12 @@ export class Auth {
 		return auth_token
 	}
 
-	public static async accessValid(auth_token_id: number, cookies?: Cookies): Promise<void> {
-		const auth_token = await Auth.updateAuthToken(auth_token_id)
-		const session_lifetime_sec = await Auth.getSessionLifetimeSec()
+	public static async access_valid(auth_token_id: number, cookies?: Cookies): Promise<void> {
+		const auth_token = await Auth.update_auth_token(auth_token_id)
+		const session_lifetime_sec = await Auth.get_session_lifetime_sec()
 
 		if (cookies) {
-			new CookiesManager(cookies).setSessionId(auth_token.token, session_lifetime_sec)
+			new CookiesManager(cookies).set_session_id(auth_token.token, session_lifetime_sec)
 		}
 	}
 }
