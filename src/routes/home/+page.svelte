@@ -142,11 +142,10 @@
 		flex-direction: row;
 		gap: 8px;
 		align-items: center;
-		height: 22px;
 	}
 
 	.avatar_above {
-		width: 48px;
+		min-width: 48px;
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
