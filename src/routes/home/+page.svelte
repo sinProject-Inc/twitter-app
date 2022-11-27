@@ -55,7 +55,8 @@
 					<div class="username_row">
 						<div class="name overflow_ellipsis">{tweet.name}</div>
 						<div class="username overflow_ellipsis">@{tweet.username}</div>
-						<div class="time">{tweet.local_created_at}</div>
+						<div>·</div>
+						<div class="time">{tweet.elapsed_time}</div>
 					</div>
 					<div dir="auto">
 						{tweet.text}
@@ -151,7 +152,7 @@
 	.username_row {
 		display: flex;
 		flex-direction: row;
-		gap: 8px;
+		gap: 4px;
 		align-items: center;
 	}
 

@@ -70,6 +70,37 @@ export class Tweet {
 		return local_created_at
 	}
 
+	public get month_day(): string {
+		const created_at = this._target_tweet_data.created_at
+
+		if (!created_at) return ''
+
+		const date = new Date(created_at)
+		// const year = date.getFullYear()
+		const month = date.getMonth() + 1
+		const day = date.getDate()
+
+		return `${month}月${day}日`
+	}
+
+	public get elapsed_time(): string {
+		const created_at = this._target_tweet_data.created_at
+
+		if (!created_at) return ''
+
+		const elapsed_time = new Date().getTime() - new Date(created_at).getTime()
+		const elapsed_time_seconds = elapsed_time / 1000
+		const elapsed_time_minutes = elapsed_time_seconds / 60
+		const elapsed_time_hours = elapsed_time_minutes / 60
+		const elapsed_time_days = elapsed_time_hours / 24
+
+		if (elapsed_time_days > 1) return this.month_day
+		// if (elapsed_time_days > 1) return `${Math.floor(elapsed_time_days)}日前`
+		if (elapsed_time_hours > 1) return `${Math.floor(elapsed_time_hours)}時間`
+		if (elapsed_time_minutes > 1) return `${Math.floor(elapsed_time_minutes)}分`
+		return `${Math.floor(elapsed_time_seconds)}秒`
+	}
+
 	public get text(): string {
 		return this._target_tweet_data.text ?? ''
 	}
