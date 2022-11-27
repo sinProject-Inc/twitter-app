@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		const tweets = await client.tweets.usersIdTimeline(locals.user.twitter_id, {
 			// max_results: 30,
 			expansions: ['author_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'],
-			'tweet.fields': ['created_at'],
+			'tweet.fields': ['created_at', 'public_metrics'],
 			'user.fields': ['profile_image_url'],
 			// 'tweet.fields': ['author_id'],
 			// 'tweet.fields': ['created_at', 'entities', 'public_metrics'],
