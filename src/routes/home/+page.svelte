@@ -44,7 +44,7 @@
 	<div class="element">
 		{#if tweet.is_retweet}
 			<div class="retweet_row">
-				<div class="avatar_above"><div class="retweet"><Retweet /></div></div>
+				<div class="avatar_above"><div class="retweet_icon"><Retweet /></div></div>
 				{tweet.retweet_user_name}さんがリツイートしました
 			</div>
 		{/if}
@@ -54,7 +54,7 @@
 				<div class="text_column">
 					<div class="username_row">
 						<div class="name overflow_ellipsis">{tweet.name}</div>
-						<div class="username overflow_ellipsis">@{tweet.username}</div>
+						<div class="overflow_ellipsis">@{tweet.username}</div>
 						<div>·</div>
 						<div class="time">{tweet.elapsed_time}</div>
 					</div>
@@ -64,21 +64,21 @@
 				</div>
 				<div class="action_row">
 					<div class="action">
-						<div class="icon">
+						<div class="action_icon">
 							<div class="tap_area" />
 							<Reply />
 						</div>
 						<div class="icon_text overflow_ellipsis">{tweet.reply_count}</div>
 					</div>
 					<div class="action">
-						<div class="icon">
+						<div class="action_icon">
 							<div class="tap_area" />
 							<Retweet />
 						</div>
 						<div class="icon_text overflow_ellipsis">{tweet.retweet_count}</div>
 					</div>
 					<div class="action">
-						<div class="icon">
+						<div class="action_icon">
 							<div class="tap_area" />
 							<Like />
 						</div>
@@ -95,12 +95,22 @@
 		font-family: 'Segoe UI', Meiryo, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 	}
 
+	:root {
+		--gray-color: rgb(83, 100, 113);
+		--text-color: rgb(15, 20, 25);
+	}
+
 	.element {
 		padding: 10px;
-		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid rgb(239, 243, 244);
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
+	}
+
+	.element:hover {
+		transition: 0.2s;
+		background-color: rgb(245, 248, 250);
 	}
 
 	.retweet_row {
@@ -108,6 +118,10 @@
 		flex-direction: row;
 		gap: 8px;
 		align-items: center;
+		color: var(--gray-color);
+		font-weight: 700;
+		font-size: 13px;
+		line-height: 16px;
 	}
 
 	.avatar_above {
@@ -117,8 +131,9 @@
 		justify-content: flex-end;
 	}
 
-	.retweet {
+	:global(.retweet_icon) {
 		width: 16px;
+		fill: var(--gray-color);
 	}
 
 	.tweet {
@@ -136,9 +151,13 @@
 	.tweet_body {
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		gap: 12px;
 		min-width: 0;
 		flex: auto;
+
+		font-size: 15px;
+		font-weight: 400;
+		line-height: 20px;
 	}
 
 	.text_column {
@@ -147,6 +166,7 @@
 		gap: 8px;
 		min-width: 0;
 		overflow-wrap: break-word;
+		color: var(--text-color);
 	}
 
 	.username_row {
@@ -154,6 +174,11 @@
 		flex-direction: row;
 		gap: 4px;
 		align-items: center;
+
+		color: var(--gray-color);
+		font-weight: 400;
+		font-size: 15px;
+		line-height: 20px;
 	}
 
 	.overflow_ellipsis {
@@ -163,29 +188,29 @@
 	}
 
 	.name {
-		font-weight: bold;
-	}
-
-	.username {
-		color: #666;
+		color: rgb(15, 20, 25);
+		font-weight: 700;
 	}
 
 	.time {
-		color: #666;
 		white-space: nowrap;
 	}
 
 	.action_row {
 		display: flex;
 		flex-direction: row;
-		gap: 8px;
+		gap: 10px;
 		align-items: center;
+
+		color: var(--gray-color);
+		line-height: 16px;
+		font-size: 13px;
 	}
 
 	.action {
 		display: flex;
 		flex-direction: row;
-		gap: 8px;
+		gap: 10px;
 		align-items: center;
 		flex: 1;
 	}
@@ -194,11 +219,13 @@
 		font-size: 14px;
 	}
 
-	.icon {
+	:global(.action_icon) {
 		width: 17.5px;
 		height: 17.5px;
 		position: relative;
+		fill: var(--gray-color);
 	}
+
 
 	.tap_area {
 		cursor: pointer;
