@@ -173,6 +173,7 @@
 		flex-direction: column;
 		gap: 2px;
 		min-width: 0;
+		overflow-wrap: break-word;
 	}
 
 	.username_row {
