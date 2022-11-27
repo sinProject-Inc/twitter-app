@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Like from '$lib/icons/like.svelte'
+	import Reply from '$lib/icons/reply.svelte'
 	import Retweet from '$lib/icons/retweet.svelte'
 	import type { components } from 'twitter-api-sdk/dist/types'
 	import type { PageData } from './$types'
@@ -46,12 +48,6 @@
 
 	// console.log(timeline)
 
-	function to_local_date(date?: string): string {
-		if (!date) return ''
-
-		return new Date(date).toLocaleString('ja-JP')
-	}
-
 	function is_retweet(tweet: components['schemas']['Tweet']): boolean {
 		return (
 			tweet.referenced_tweets?.some((referenced_tweet) => referenced_tweet.type === 'retweeted') ??
@@ -79,6 +75,18 @@
 		const target_tweet = is_original ? tweet : get_target_tweet(tweet)
 
 		return user_map.get(target_tweet.author_id ?? '')
+	}
+
+	function to_local_date(date?: string): string {
+		if (!date) return ''
+
+		return new Date(date).toLocaleString('ja-JP')
+	}
+
+	function get_local_date(tweet: components['schemas']['Tweet']): string {
+		const target_tweet = get_target_tweet(tweet)
+
+		return to_local_date(target_tweet.created_at)
 	}
 
 	function get_text(tweet: components['schemas']['Tweet']): string {
@@ -112,13 +120,38 @@
 		{/if}
 		<div class="tweet">
 			<img class="avatar" src={get_user(tweet)?.profile_image_url} alt="avatar" />
-			<div class="text_column">
-				<div class="username_row">
-					<div class="name overflow_ellipsis">{get_user(tweet)?.name}</div>
-					<div class="username overflow_ellipsis">@{get_user(tweet)?.username}</div>
-					<div class="time">{to_local_date(tweet.created_at)}</div>
+			<div class="tweet_body">
+				<div class="text_column">
+					<div class="username_row">
+						<div class="name overflow_ellipsis">{get_user(tweet)?.name}</div>
+						<div class="username overflow_ellipsis">@{get_user(tweet)?.username}</div>
+						<div class="time">{get_local_date(tweet)}</div>
+					</div>
+					{get_text(tweet)}
 				</div>
-				{get_text(tweet)}
+				<div class="action_row">
+					<div class="action">
+						<div class="icon">
+							<div class="tap_area" />
+							<Reply />
+						</div>
+						<div class="icon_text overflow_ellipsis">1,234</div>
+					</div>
+					<div class="action">
+						<div class="icon">
+							<div class="tap_area" />
+							<Retweet />
+						</div>
+						<div class="icon_text overflow_ellipsis">2,345</div>
+					</div>
+					<div class="action">
+						<div class="icon">
+							<div class="tap_area" />
+							<Like />
+						</div>
+						<div class="icon_text overflow_ellipsis">3,456</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -167,10 +200,18 @@
 		height: 48px;
 	}
 
+	.tweet_body {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		min-width: 0;
+		flex: auto;
+	}
+
 	.text_column {
 		display: flex;
 		flex-direction: column;
-		gap: 2px;
+		gap: 8px;
 		min-width: 0;
 		overflow-wrap: break-word;
 	}
@@ -199,5 +240,40 @@
 	.time {
 		color: #666;
 		white-space: nowrap;
+	}
+
+	.action_row {
+		display: flex;
+		flex-direction: row;
+		gap: 8px;
+		align-items: center;
+	}
+
+	.action {
+		display: flex;
+		flex-direction: row;
+		gap: 8px;
+		align-items: center;
+		flex: 1;
+	}
+
+	.icon_text {
+		font-size: 14px;
+	}
+
+	.icon {
+		width: 17.5px;
+		height: 17.5px;
+		position: relative;
+	}
+
+	.tap_area {
+		cursor: pointer;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		margin: -8px;
 	}
 </style>
