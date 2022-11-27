@@ -40,7 +40,7 @@
 <!-- {$page.data.user.twitter_id} -->
 
 {#each tweets_data as tweet_data}
-	{ @const tweet = new Tweet(tweet_data, user_data_map, referenced_tweets_data_map)}
+	{@const tweet = new Tweet(tweet_data, user_data_map, referenced_tweets_data_map)}
 	<div class="element">
 		{#if tweet.is_retweet}
 			<div class="retweet_row">
@@ -57,7 +57,9 @@
 						<div class="username overflow_ellipsis">@{tweet.username}</div>
 						<div class="time">{tweet.local_created_at}</div>
 					</div>
-					{tweet.text}
+					<div dir="auto">
+						{tweet.text}
+					</div>
 				</div>
 				<div class="action_row">
 					<div class="action">
