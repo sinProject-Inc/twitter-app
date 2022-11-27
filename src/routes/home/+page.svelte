@@ -122,6 +122,7 @@
 		font-weight: 700;
 		font-size: 13px;
 		line-height: 16px;
+		fill: currentColor;
 	}
 
 	.avatar_above {
@@ -131,9 +132,8 @@
 		justify-content: flex-end;
 	}
 
-	:global(.retweet_icon) {
+	.retweet_icon {
 		width: 16px;
-		fill: var(--gray-color);
 	}
 
 	.tweet {
@@ -205,6 +205,7 @@
 		color: var(--gray-color);
 		line-height: 16px;
 		font-size: 13px;
+		fill: currentColor;
 	}
 
 	.action {
@@ -219,11 +220,10 @@
 		font-size: 14px;
 	}
 
-	:global(.action_icon) {
+	.action_icon {
 		width: 17.5px;
 		height: 17.5px;
 		position: relative;
-		fill: var(--gray-color);
 	}
 
 
