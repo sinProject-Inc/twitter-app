@@ -95,6 +95,33 @@
 		return target_tweet.text ?? ''
 	}
 
+	function get_retweet_count(tweet: components['schemas']['Tweet']): string {
+		const target_tweet = get_target_tweet(tweet)
+
+		const count = target_tweet.public_metrics?.retweet_count ?? 0 
+		const count_text = count > 0 ? count.toLocaleString('ja-JP') : ''
+
+		return count_text
+	}
+
+	function get_reply_count(tweet: components['schemas']['Tweet']): string {
+		const target_tweet = get_target_tweet(tweet)
+
+		const count = target_tweet.public_metrics?.reply_count ?? 0 
+		const count_text = count > 0 ? count.toLocaleString('ja-JP') : ''
+
+		return count_text
+	}
+
+	function get_like_count(tweet: components['schemas']['Tweet']): string {
+		const target_tweet = get_target_tweet(tweet)
+
+		const count = target_tweet.public_metrics?.like_count ?? 0 
+		const count_text = count > 0 ? count.toLocaleString('ja-JP') : ''
+
+		return count_text
+	}
+
 	// console.log(tweets)
 </script>
 
@@ -135,21 +162,21 @@
 							<div class="tap_area" />
 							<Reply />
 						</div>
-						<div class="icon_text overflow_ellipsis">1,234</div>
+						<div class="icon_text overflow_ellipsis">{get_reply_count(tweet)}</div>
 					</div>
 					<div class="action">
 						<div class="icon">
 							<div class="tap_area" />
 							<Retweet />
 						</div>
-						<div class="icon_text overflow_ellipsis">2,345</div>
+						<div class="icon_text overflow_ellipsis">{get_retweet_count(tweet)}</div>
 					</div>
 					<div class="action">
 						<div class="icon">
 							<div class="tap_area" />
 							<Like />
 						</div>
-						<div class="icon_text overflow_ellipsis">3,456</div>
+						<div class="icon_text overflow_ellipsis">{get_like_count(tweet)}</div>
 					</div>
 				</div>
 			</div>
