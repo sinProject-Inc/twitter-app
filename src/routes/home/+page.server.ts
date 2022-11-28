@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 				'referenced_tweets.id.author_id',
 				'attachments.media_keys',
 			],
-			'tweet.fields': ['created_at', 'public_metrics'],
+			'tweet.fields': ['created_at', 'public_metrics', 'entities'],
 			'user.fields': ['profile_image_url'],
 			'media.fields': ['preview_image_url', 'url'],
 			// 'tweet.fields': ['author_id'],

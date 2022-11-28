@@ -66,7 +66,7 @@
 						<div class="time">{tweet.elapsed_time}</div>
 					</div>
 					<div dir="auto">
-						{tweet.text}
+						{@html tweet.html_text}
 					</div>
 				</div>
 				<div class="media_frame media_column">
@@ -139,6 +139,24 @@
 	:root {
 		--gray-color: rgb(83, 100, 113);
 		--text-color: rgb(15, 20, 25);
+		--link-color: rgb(29, 155, 240);
+	}
+
+	:global(a) {
+		text-decoration: none;
+	}
+	:global(a:link) {
+		color: var(--link-color);
+	}
+	:global(a:visited) {
+		color: var(--link-color);
+	}
+	:global(a:hover) {
+		color: var(--link-color);
+		text-decoration: underline;
+	}
+	:global(a:active) {
+		color: var(--link-color);
 	}
 
 	.element {
