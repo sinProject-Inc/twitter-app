@@ -13,6 +13,7 @@
 	const tweets_data = data.tweets.data || []
 	const users_data = data.tweets.includes?.users || []
 	const referenced_tweets_data = data.tweets.includes?.tweets || []
+	const media_data = data.tweets.includes?.media || []
 
 	const user_data_map = users_data.reduce((map, user) => {
 		map.set(user.id, user)
@@ -25,6 +26,12 @@
 		return map
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	}, new Map<string, components['schemas']['Tweet']>())
+
+	const media_data_map = media_data.reduce((map, media) => {
+		map.set(media.media_key ?? '', media)
+		return map
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	}, new Map<string, components['schemas']['Media']>())
 </script>
 
 <svelte:head>
@@ -60,6 +67,40 @@
 					</div>
 					<div dir="auto">
 						{tweet.text}
+					</div>
+				</div>
+				<div class="media_frame media_column">
+					<div class="media_row">
+						<div class="media_cell">
+							<img
+								alt="画像"
+								src="https://pbs.twimg.com/media/FikYru6XoAAshkj?format=jpg&amp;name=small"
+								class="media"
+							/>
+						</div>
+						<div class="media_cell">
+							<img
+								alt="画像"
+								src="https://pbs.twimg.com/media/FimjZqxUUAAozrX?format=jpg&name=small"
+								class="media"
+							/>
+						</div>
+					</div>
+					<div class="media_row">
+						<div class="media_cell">
+							<img
+								alt="画像"
+								src="https://pbs.twimg.com/media/FimjZqzVEAAIiSS?format=jpg&name=small"
+								class="media"
+							/>
+						</div>
+						<div class="media_cell">
+							<img
+								alt="画像"
+								src="https://pbs.twimg.com/media/Fik7ftHaEAQGfw8?format=jpg&name=medium"
+								class="media"
+							/>
+						</div>
 					</div>
 				</div>
 				<div class="action_row">
@@ -226,7 +267,6 @@
 		position: relative;
 	}
 
-
 	.tap_area {
 		cursor: pointer;
 		position: absolute;
@@ -235,5 +275,41 @@
 		right: 0;
 		bottom: 0;
 		margin: -8px;
+	}
+
+	.media_frame {
+		border-radius: 16px;
+		border-style: solid;
+		border-width: 1px;
+		border-color: rgb(207, 217, 222);
+		max-width: 506px;
+		/* max-height: 285px; */
+		aspect-ratio: 506 / 282;
+		overflow: hidden;
+	}
+
+	.media_column {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.media_row {
+		display: flex;
+		flex-direction: row;
+		gap: 2px;
+
+		min-height: 0;
+		flex: 1;
+	}
+
+	.media_cell {
+		flex: 1;
+	}
+
+	.media {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 </style>

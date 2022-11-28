@@ -10,9 +10,15 @@ export const load: PageServerLoad = async ({ locals }) => {
 	try {
 		const tweets = await client.tweets.usersIdTimeline(locals.user.twitter_id, {
 			// max_results: 30,
-			expansions: ['author_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'],
+			expansions: [
+				'author_id',
+				'referenced_tweets.id',
+				'referenced_tweets.id.author_id',
+				'attachments.media_keys',
+			],
 			'tweet.fields': ['created_at', 'public_metrics'],
 			'user.fields': ['profile_image_url'],
+			'media.fields': ['preview_image_url', 'url'],
 			// 'tweet.fields': ['author_id'],
 			// 'tweet.fields': ['created_at', 'entities', 'public_metrics'],
 		})
@@ -23,7 +29,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 		// 	}
 		// }
 
-		console.log(tweets)
+		console.log('tweets', tweets)
+		console.log('media', tweets.includes?.media)
 		// console.log(tweets.includes?.users)
 		// console.log(tweets.includes?.tweets)
 
