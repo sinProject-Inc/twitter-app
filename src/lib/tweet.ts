@@ -46,7 +46,7 @@ export class Tweet {
 	}
 
 	public get profile_image_url(): string {
-		return this._target_user_data?.profile_image_url ?? ''
+		return this._target_user_data?.profile_image_url?.replace('_normal', '_x96') ?? ''
 	}
 
 	public get name(): string {
