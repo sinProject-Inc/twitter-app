@@ -56,7 +56,9 @@
 			</div>
 		{/if}
 		<div class="tweet">
-			<img class="avatar" src={tweet.profile_image_url} alt="avatar" />
+			<div class="avatar_container">
+				<img class="avatar" src={tweet.profile_image_url} alt="avatar" />
+			</div>
 			<div class="tweet_body">
 				<div class="text_column">
 					<div class="username_row">
@@ -201,10 +203,25 @@
 		gap: 8px;
 	}
 
-	.avatar {
+	.avatar_container {
 		border-radius: 50%;
-		width: 48px;
+		border: 0;
+		min-width: 48px;
 		height: 48px;
+		overflow: hidden;
+	}
+
+	.avatar {
+		transition: 0.2s;
+		width: 100%;
+		height: 100%;
+		/* background-color: black; */
+	}
+
+	.avatar:hover {
+		transition: 0.2s;
+		filter: brightness(0.8);
+		/* opacity: 0.8; */
 	}
 
 	.tweet_body {
