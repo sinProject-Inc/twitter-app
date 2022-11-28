@@ -105,6 +105,45 @@ export class Tweet {
 		return this._target_tweet_data.text ?? ''
 	}
 
+	public get html_text(): string {
+		const text = this.text
+		const urls = this._target_tweet_data.entities?.urls ?? []
+		const mentions = this._target_tweet_data.entities?.mentions ?? []
+		const hashtags = this._target_tweet_data.entities?.hashtags ?? []
+
+		let html_text = text
+
+		for (const url of urls) {
+			const url_text = url.url ?? ''
+			const expanded_url = url.expanded_url ?? ''
+			const display_url = url.display_url ?? ''
+
+			html_text = html_text.replace(url_text, `<a href="${expanded_url}">${display_url}</a>`)
+		}
+
+		for (const mention of mentions) {
+			const mention_text = mention.username ?? ''
+			const mention_url = `https://twitter.com/${mention_text}`
+
+			html_text = html_text.replace(
+				`@${mention_text}`,
+				`<a href="${mention_url}">@${mention_text}</a>`
+			)
+		}
+
+		for (const hashtag of hashtags) {
+			const hashtag_text = hashtag.tag ?? ''
+			const hashtag_url = `https://twitter.com/hashtag/${hashtag_text}`
+
+			html_text = html_text.replace(
+				`#${hashtag_text}`,
+				`<a href="${hashtag_url}">#${hashtag_text}</a>`
+			)
+		}
+
+		return html_text
+	}
+
 	private _count_to_text(data_count: number | undefined): string {
 		const count = data_count ?? 0
 		// TODO: set locale
