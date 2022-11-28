@@ -122,4 +122,10 @@ export class Tweet {
 	public get reply_count(): string {
 		return this._count_to_text(this._target_tweet_data.public_metrics?.reply_count)
 	}
+
+	// public get media_url(): string {
+	// 	const media_keys = this._target_tweet_data.attachments?.media_keys ?? []
+
+	// 	// return this._target_tweet_data.attachments?.media_keys[0] ?? ''
+	// }
 }
