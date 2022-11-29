@@ -47,7 +47,7 @@
 <!-- {$page.data.user.twitter_id} -->
 
 {#each tweets_data as tweet_data}
-	{@const tweet = new Tweet(tweet_data, user_data_map, referenced_tweets_data_map)}
+	{@const tweet = new Tweet(tweet_data, user_data_map, referenced_tweets_data_map, media_data_map)}
 	<a href={tweet.status_url} class="tweet_container">
 		<div class="element">
 			{#if tweet.is_retweet}
@@ -82,40 +82,57 @@
 							{@html tweet.html_text}
 						</div>
 					</div>
-					<div class="media_frame media_column">
-						<div class="media_row">
-							<div class="media_cell">
-								<img
-									alt="画像"
-									src="https://pbs.twimg.com/media/FikYru6XoAAshkj?format=jpg&amp;name=small"
-									class="media"
-								/>
-							</div>
-							<div class="media_cell">
-								<img
-									alt="画像"
-									src="https://pbs.twimg.com/media/FimjZqxUUAAozrX?format=jpg&name=small"
-									class="media"
-								/>
+
+					{#if tweet.media_count === 1}
+						<div class="media_frame">
+							<img alt="画像" src={tweet.media_url_0} class="media" />
+						</div>
+					{:else if tweet.media_count === 2}
+						<div class="media_frame media_column media_frame_tile">
+							<div class="media_row">
+								<div class="media_cell">
+									<img alt="画像" src={tweet.media_url_0} class="media" />
+								</div>
+								<div class="media_cell">
+									<img alt="画像" src={tweet.media_url_1} class="media" />
+								</div>
 							</div>
 						</div>
-						<div class="media_row">
+					{:else if tweet.media_count === 3}
+						<div class="media_frame media_row media_frame_tile">
 							<div class="media_cell">
-								<img
-									alt="画像"
-									src="https://pbs.twimg.com/media/FimjZqzVEAAIiSS?format=jpg&name=small"
-									class="media"
-								/>
+								<img alt="画像" src={tweet.media_url_0} class="media" />
 							</div>
-							<div class="media_cell">
-								<img
-									alt="画像"
-									src="https://pbs.twimg.com/media/Fik7ftHaEAQGfw8?format=jpg&name=medium"
-									class="media"
-								/>
+							<div class="media_column">
+								<div class="media_cell">
+									<img alt="画像" src={tweet.media_url_1} class="media" />
+								</div>
+								<div class="media_cell">
+									<img alt="画像" src={tweet.media_url_2} class="media" />
+								</div>
 							</div>
 						</div>
-					</div>
+					{:else if tweet.media_count === 4}
+						<div class="media_frame media_column media_frame_tile">
+							<div class="media_row">
+								<div class="media_cell">
+									<img alt="画像" src={tweet.media_url_0} class="media" />
+								</div>
+								<div class="media_cell">
+									<img alt="画像" src={tweet.media_url_1} class="media" />
+								</div>
+							</div>
+							<div class="media_row">
+								<div class="media_cell">
+									<img alt="画像" src={tweet.media_url_2} class="media" />
+								</div>
+								<div class="media_cell">
+									<img alt="画像" src={tweet.media_url_3} class="media" />
+								</div>
+							</div>
+						</div>
+					{/if}
+
 					<div class="action_row">
 						<div class="action">
 							<div class="action_icon">
@@ -353,14 +370,19 @@
 		border-color: rgb(207, 217, 222);
 		max-width: 506px;
 		/* max-height: 285px; */
-		aspect-ratio: 506 / 282;
 		overflow: hidden;
+	}
+
+	.media_frame_tile {
+		aspect-ratio: 506 / 282;
 	}
 
 	.media_column {
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
+
+		flex: 1;
 	}
 
 	.media_row {
@@ -374,6 +396,7 @@
 
 	.media_cell {
 		flex: 1;
+		min-height: 0;
 	}
 
 	.media {
