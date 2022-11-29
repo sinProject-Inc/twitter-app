@@ -165,11 +165,15 @@ export class Tweet {
 	}
 
 	public get status_url(): string {
-		return `${Tweet._base_url}${this.username}/status/${this._tweet_data.id}`
+		return `${Tweet._base_url}${this.username}/status/${this._target_tweet_data.id}`
 	}
 
 	public get profile_url(): string {
 		return `${Tweet._base_url}${this.username}`
+	}
+
+	public get created_at(): string {
+		return this._target_tweet_data.created_at ?? ''
 	}
 
 	// public get media_url(): string {

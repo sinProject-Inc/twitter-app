@@ -72,7 +72,11 @@
 								<a href={tweet.profile_url}>@{tweet.username}</a>
 							</div>
 							<div>·</div>
-							<div class="time">{tweet.elapsed_time}</div>
+							<div class="time">
+								<a href={tweet.status_url}>
+									<time datetime={tweet.created_at}>{tweet.elapsed_time}</time>
+								</a>
+							</div>
 						</div>
 						<div dir="auto">
 							{@html tweet.html_text}
@@ -264,7 +268,6 @@
 		gap: 4px;
 		align-items: center;
 
-		color: var(--gray-color);
 		font-weight: 400;
 		font-size: 15px;
 		line-height: 20px;
@@ -295,6 +298,10 @@
 
 	.time {
 		white-space: nowrap;
+	}
+
+	.time a {
+		color: var(--gray-color);
 	}
 
 	.action_row {
