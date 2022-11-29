@@ -48,89 +48,91 @@
 
 {#each tweets_data as tweet_data}
 	{@const tweet = new Tweet(tweet_data, user_data_map, referenced_tweets_data_map)}
-	<div class="element">
-		{#if tweet.is_retweet}
-			<div class="retweet_row">
-				<div class="avatar_above"><div class="retweet_icon"><Retweet /></div></div>
-				{tweet.retweet_user_name}さんがリツイートしました
-			</div>
-		{/if}
-		<div class="tweet">
-			<div class="avatar_container">
-				<img class="avatar" src={tweet.profile_image_url} alt="avatar" />
-			</div>
-			<div class="tweet_body">
-				<div class="text_column">
-					<div class="username_row">
-						<div class="name overflow_ellipsis">{tweet.name}</div>
-						<div class="overflow_ellipsis">@{tweet.username}</div>
-						<div>·</div>
-						<div class="time">{tweet.elapsed_time}</div>
-					</div>
-					<div dir="auto">
-						{@html tweet.html_text}
-					</div>
+	<a href={tweet.status_url} class="tweet_container">
+		<div class="element">
+			{#if tweet.is_retweet}
+				<div class="retweet_row">
+					<div class="avatar_above"><div class="retweet_icon"><Retweet /></div></div>
+					{tweet.retweet_user_name}さんがリツイートしました
 				</div>
-				<div class="media_frame media_column">
-					<div class="media_row">
-						<div class="media_cell">
-							<img
-								alt="画像"
-								src="https://pbs.twimg.com/media/FikYru6XoAAshkj?format=jpg&amp;name=small"
-								class="media"
-							/>
-						</div>
-						<div class="media_cell">
-							<img
-								alt="画像"
-								src="https://pbs.twimg.com/media/FimjZqxUUAAozrX?format=jpg&name=small"
-								class="media"
-							/>
-						</div>
-					</div>
-					<div class="media_row">
-						<div class="media_cell">
-							<img
-								alt="画像"
-								src="https://pbs.twimg.com/media/FimjZqzVEAAIiSS?format=jpg&name=small"
-								class="media"
-							/>
-						</div>
-						<div class="media_cell">
-							<img
-								alt="画像"
-								src="https://pbs.twimg.com/media/Fik7ftHaEAQGfw8?format=jpg&name=medium"
-								class="media"
-							/>
-						</div>
-					</div>
+			{/if}
+			<div class="tweet">
+				<div class="avatar_container">
+					<img class="avatar" src={tweet.profile_image_url} alt="avatar" />
 				</div>
-				<div class="action_row">
-					<div class="action">
-						<div class="action_icon">
-							<div class="tap_area" />
-							<Reply />
+				<div class="tweet_body">
+					<div class="text_column">
+						<div class="username_row">
+							<div class="name overflow_ellipsis">{tweet.name}</div>
+							<div class="overflow_ellipsis">@{tweet.username}</div>
+							<div>·</div>
+							<div class="time">{tweet.elapsed_time}</div>
 						</div>
-						<div class="icon_text overflow_ellipsis">{tweet.reply_count}</div>
+						<div dir="auto">
+							{@html tweet.html_text}
+						</div>
 					</div>
-					<div class="action">
-						<div class="action_icon">
-							<div class="tap_area" />
-							<Retweet />
+					<div class="media_frame media_column">
+						<div class="media_row">
+							<div class="media_cell">
+								<img
+									alt="画像"
+									src="https://pbs.twimg.com/media/FikYru6XoAAshkj?format=jpg&amp;name=small"
+									class="media"
+								/>
+							</div>
+							<div class="media_cell">
+								<img
+									alt="画像"
+									src="https://pbs.twimg.com/media/FimjZqxUUAAozrX?format=jpg&name=small"
+									class="media"
+								/>
+							</div>
 						</div>
-						<div class="icon_text overflow_ellipsis">{tweet.retweet_count}</div>
+						<div class="media_row">
+							<div class="media_cell">
+								<img
+									alt="画像"
+									src="https://pbs.twimg.com/media/FimjZqzVEAAIiSS?format=jpg&name=small"
+									class="media"
+								/>
+							</div>
+							<div class="media_cell">
+								<img
+									alt="画像"
+									src="https://pbs.twimg.com/media/Fik7ftHaEAQGfw8?format=jpg&name=medium"
+									class="media"
+								/>
+							</div>
+						</div>
 					</div>
-					<div class="action">
-						<div class="action_icon">
-							<div class="tap_area" />
-							<Like />
+					<div class="action_row">
+						<div class="action">
+							<div class="action_icon">
+								<div class="tap_area" />
+								<Reply />
+							</div>
+							<div class="icon_text overflow_ellipsis">{tweet.reply_count}</div>
 						</div>
-						<div class="icon_text overflow_ellipsis">{tweet.like_count}</div>
+						<div class="action">
+							<div class="action_icon">
+								<div class="tap_area" />
+								<Retweet />
+							</div>
+							<div class="icon_text overflow_ellipsis">{tweet.retweet_count}</div>
+						</div>
+						<div class="action">
+							<div class="action_icon">
+								<div class="tap_area" />
+								<Like />
+							</div>
+							<div class="icon_text overflow_ellipsis">{tweet.like_count}</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</a>
 {/each}
 
 <style>
@@ -161,12 +163,17 @@
 		color: var(--link-color);
 	}
 
+	.tweet_container:hover {
+		text-decoration: none;
+	}
+
 	.element {
 		padding: 10px;
 		border-bottom: 1px solid rgb(239, 243, 244);
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
+		cursor: pointer;
 	}
 
 	.element:hover {

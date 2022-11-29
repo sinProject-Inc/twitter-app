@@ -1,6 +1,8 @@
 import type { components } from 'twitter-api-sdk/dist/types'
 
 export class Tweet {
+	private static _base_url = 'http://twitter.com/'
+
 	private readonly _target_tweet_data: components['schemas']['Tweet']
 	private readonly _target_user_data: components['schemas']['User'] | undefined
 	private readonly _self_user_data: components['schemas']['User'] | undefined
@@ -123,7 +125,7 @@ export class Tweet {
 
 		for (const mention of mentions) {
 			const mention_text = mention.username ?? ''
-			const mention_url = `https://twitter.com/${mention_text}`
+			const mention_url = `${Tweet._base_url}${mention_text}`
 
 			html_text = html_text.replace(
 				`@${mention_text}`,
@@ -133,7 +135,7 @@ export class Tweet {
 
 		for (const hashtag of hashtags) {
 			const hashtag_text = hashtag.tag ?? ''
-			const hashtag_url = `https://twitter.com/hashtag/${hashtag_text}`
+			const hashtag_url = `${Tweet._base_url}hashtag/${hashtag_text}`
 
 			html_text = html_text.replace(
 				`#${hashtag_text}`,
@@ -160,6 +162,10 @@ export class Tweet {
 
 	public get reply_count(): string {
 		return this._count_to_text(this._target_tweet_data.public_metrics?.reply_count)
+	}
+
+	public get status_url(): string {
+		return `${Tweet._base_url}${this.username}/status/${this._tweet_data.id}`
 	}
 
 	// public get media_url(): string {
