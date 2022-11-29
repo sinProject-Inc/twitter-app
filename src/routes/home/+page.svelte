@@ -65,8 +65,12 @@
 				<div class="tweet_body">
 					<div class="text_column">
 						<div class="username_row">
-							<div class="name overflow_ellipsis">{tweet.name}</div>
-							<div class="overflow_ellipsis">@{tweet.username}</div>
+							<div class="name overflow_ellipsis">
+								<a href={tweet.profile_url}>{tweet.name}</a>
+							</div>
+							<div class="username overflow_ellipsis">
+								<a href={tweet.profile_url}>@{tweet.username}</a>
+							</div>
 							<div>·</div>
 							<div class="time">{tweet.elapsed_time}</div>
 						</div>
@@ -275,6 +279,18 @@
 	.name {
 		color: rgb(15, 20, 25);
 		font-weight: 700;
+	}
+
+	.name a {
+		color: rgb(15, 20, 25);
+	}
+
+	.username a {
+		color: var(--gray-color);
+	}
+
+	.username a:hover {
+		text-decoration: none;
 	}
 
 	.time {
