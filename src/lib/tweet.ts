@@ -168,6 +168,10 @@ export class Tweet {
 		return `${Tweet._base_url}${this.username}/status/${this._tweet_data.id}`
 	}
 
+	public get profile_url(): string {
+		return `${Tweet._base_url}${this.username}`
+	}
+
 	// public get media_url(): string {
 	// 	const media_keys = this._target_tweet_data.attachments?.media_keys ?? []
 

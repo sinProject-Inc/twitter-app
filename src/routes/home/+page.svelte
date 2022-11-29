@@ -58,7 +58,9 @@
 			{/if}
 			<div class="tweet">
 				<div class="avatar_container">
-					<img class="avatar" src={tweet.profile_image_url} alt="avatar" />
+					<a href={tweet.profile_url}>
+						<img class="avatar" src={tweet.profile_image_url} alt="avatar" />
+					</a>
 				</div>
 				<div class="tweet_body">
 					<div class="text_column">
