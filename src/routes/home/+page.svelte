@@ -148,6 +148,7 @@
 <style>
 	:global(body) {
 		font-family: 'Segoe UI', Meiryo, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+		margin: 0;
 	}
 
 	:root {
@@ -178,7 +179,7 @@
 	}
 
 	.element {
-		padding: 10px;
+		padding: 16px;
 		border-bottom: 1px solid rgb(239, 243, 244);
 		display: flex;
 		flex-direction: column;
@@ -194,7 +195,7 @@
 	.retweet_row {
 		display: flex;
 		flex-direction: row;
-		gap: 8px;
+		gap: 12px;
 		align-items: center;
 		color: var(--gray-color);
 		font-weight: 700;
@@ -212,12 +213,13 @@
 
 	.retweet_icon {
 		width: 16px;
+		height: 16px;
 	}
 
 	.tweet {
 		display: flex;
 		flex-direction: row;
-		gap: 8px;
+		gap: 12px;
 	}
 
 	.avatar_container {
