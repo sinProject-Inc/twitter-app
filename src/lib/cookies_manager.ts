@@ -15,7 +15,6 @@ export class CookiesManager {
 			maxAge: max_age_sec,
 			sameSite: 'lax',
 			secure: true,
-			// secure: process.env.NODE_ENV === 'production',
 			httpOnly: true,
 		})
 	}
