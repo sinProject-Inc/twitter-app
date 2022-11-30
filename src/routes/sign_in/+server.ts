@@ -1,3 +1,4 @@
+import { TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET } from '$env/static/private'
 import { Auth } from '$lib/auth'
 import { Database } from '$lib/database'
 import { redirect, type RequestHandler } from '@sveltejs/kit'
@@ -5,8 +6,8 @@ import Client, { auth } from 'twitter-api-sdk'
 // import { TwitterApi } from 'twitter-api-v2'
 
 const authClient = new auth.OAuth2User({
-	client_id: process.env.TWITTER_CLIENT_ID as string,
-	client_secret: process.env.TWITTER_CLIENT_SECRET as string,
+	client_id: TWITTER_CLIENT_ID as string,
+	client_secret: TWITTER_CLIENT_SECRET as string,
 	callback: 'http://localhost:5173/sign_in',
 	scopes: ['tweet.read', 'users.read', 'tweet.write'],
 })
@@ -32,11 +33,11 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 	try {
 		const token = await authClient.requestAccessToken(code)
 
-		console.log(token)
+		// console.log(token)
 
 		const access_token = token.token.access_token
 
-		console.log(access_token)
+		// console.log(access_token)
 
 		if (!access_token) return new Response('No token', { status: 500 })
 
@@ -45,7 +46,7 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 		const username = twitter_user.data?.username ?? ''
 		const user_key = `twitter:${twitter_id}:${username}`
 
-		console.log(user_key)
+		// console.log(user_key)
 
 		// const twitterClient = new TwitterApi(token)
 		// const credentials = await twitterClient.v1.verifyCredentials()
