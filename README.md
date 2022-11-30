@@ -44,12 +44,21 @@ TWITTER_CLIENT_ID="{client-id}"
 TWITTER_CLIENT_SECRET="{client-secret}"
 ```
 
-## Run locally
+5. Push the initial schema to the database:
+
+```bash
+npx prisma db push
+```
+
+6. Run locally
 
 ```bash
 # Start the server and open the app in a new browser tab
 npm run dev -- --open
 ```
+
+7. Insert initial data only for the first time
+- visit http://localhost:5173/init_db 
 
 ## Feedback
 
