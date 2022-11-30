@@ -10,7 +10,8 @@ export class Tweet {
 	public constructor(
 		private readonly _tweet_data: components['schemas']['Tweet'],
 		private readonly _user_data_map: Map<string, components['schemas']['User']>,
-		private readonly _referenced_tweet_data_map: Map<string, components['schemas']['Tweet']>
+		private readonly _referenced_tweet_data_map: Map<string, components['schemas']['Tweet']>,
+		private readonly _media_data_map: Map<string, components['schemas']['Media']>
 	) {
 		this._target_tweet_data = this._get_target_tweet_data()
 		this._target_user_data = this._get_user()
@@ -174,6 +175,68 @@ export class Tweet {
 
 	public get created_at(): string {
 		return this._target_tweet_data.created_at ?? ''
+	}
+
+	public get media_count(): number {
+		return this._target_tweet_data.attachments?.media_keys?.length ?? 0
+	}
+
+	private _media_url(index: number): string {
+		console.log('text', this.text)
+
+		const media_key = this._target_tweet_data.attachments?.media_keys?.[index]
+		console.log('media_key', media_key)
+
+		if (!media_key) return ''
+
+		const media_data = this._media_data_map.get(media_key)
+		console.log('media_data', media_data)
+
+		if (!media_data) return ''
+
+		if (media_data.type === 'photo') {
+			const photo_data = media_data as components['schemas']['Photo']
+			const url = photo_data.url ?? 'no photo url'
+
+			console.log('photo url', url)
+			return url
+		}
+
+		if (media_data.type === 'animated_gif') {
+			const animated_gif_data = media_data as components['schemas']['AnimatedGif']
+
+			const url = animated_gif_data.preview_image_url ?? 'no animated_git preview_image_url'
+
+			console.log('animated_gif url', url)
+			return url
+		}
+
+		if (media_data.type === 'video') {
+			const video_data = media_data as components['schemas']['Video']
+			const url = video_data.preview_image_url ?? 'no video preview_image_url'
+
+			console.log('animated_gif url', url)
+			return url
+		}
+
+		console.log('unknown type', media_data)
+
+		return ''
+	}
+
+	public get media_url_0(): string {
+		return this._media_url(0)
+	}
+
+	public get media_url_1(): string {
+		return this._media_url(1)
+	}
+	public get media_url_2(): string {
+		return this._media_url(2)
+	}
+
+	public get media_url_3(): string {
+		return this._media_url(3)
 	}
 
 	// public get media_url(): string {
