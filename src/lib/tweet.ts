@@ -179,7 +179,7 @@ export class Tweet {
 	}
 
 	public get status_url(): string {
-		return `${Tweet._base_url}${this.username}/status/${this._target_tweet_data.id}`
+		return `/${this.username}/status/${this._target_tweet_data.id}`
 	}
 
 	public get profile_url(): string {
