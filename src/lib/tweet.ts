@@ -116,6 +116,8 @@ export class Tweet {
 
 		let html_text = text
 
+		html_text = html_text.replaceAll('\n', '<br>')
+
 		for (const url of urls) {
 			const url_text = url.url ?? ''
 			const expanded_url = url.expanded_url ?? ''
