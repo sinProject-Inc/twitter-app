@@ -37,6 +37,7 @@
 		<div class="header">
 			<div class="header_row">
 				<div class="header_icon">
+					<div class="tap_area" on:click={() => history.back()} on:keydown />
 					<LeftArrow />
 				</div>
 				ツイート
@@ -250,6 +251,7 @@
 	.header_icon {
 		width: 20px;
 		height: 20px;
+		position: relative;
 	}
 
 	.element {
