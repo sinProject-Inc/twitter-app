@@ -1,7 +1,7 @@
 import type { components } from 'twitter-api-sdk/dist/types'
 
 export class Tweet {
-	private static _base_url = 'http://twitter.com/'
+	private static _base_url = 'https://twitter.com/'
 
 	private readonly _target_tweet_data: components['schemas']['Tweet']
 	private readonly _target_user_data: components['schemas']['User'] | undefined
@@ -116,12 +116,21 @@ export class Tweet {
 
 		let html_text = text
 
+		html_text = html_text.replaceAll('\n', '<br>')
+
 		for (const url of urls) {
 			const url_text = url.url ?? ''
 			const expanded_url = url.expanded_url ?? ''
 			const display_url = url.display_url ?? ''
 
-			html_text = html_text.replace(url_text, `<a href="${expanded_url}">${display_url}</a>`)
+			// console.log('expanded_url', expanded_url)
+			// console.log('status_url', this.status_url)
+
+			const link = expanded_url.startsWith(this.status_url)
+				? ''
+				: `<a href="${expanded_url}">${display_url}</a>`
+
+			html_text = html_text.replace(url_text, link)
 		}
 
 		for (const mention of mentions) {
@@ -163,6 +172,10 @@ export class Tweet {
 
 	public get reply_count(): string {
 		return this._count_to_text(this._target_tweet_data.public_metrics?.reply_count)
+	}
+
+	public get quote_count(): string {
+		return this._count_to_text(this._target_tweet_data.public_metrics?.quote_count)
 	}
 
 	public get status_url(): string {
@@ -237,6 +250,35 @@ export class Tweet {
 
 	public get media_url_3(): string {
 		return this._media_url(3)
+	}
+
+	public get counts_html_text(): string {
+		const retweet_count = this.retweet_count
+		const quote_count = this.quote_count
+		const like_count = this.like_count
+		// const reply_count = this.reply_count
+
+		const counts = []
+
+		if (retweet_count) {
+			counts.push(
+				`<div><span class="count">${retweet_count}</span>&nbsp;件のリツイート</div>`
+			)
+		}
+		
+		if (quote_count) {
+			counts.push(`<div><span class="count">${quote_count}</span>&nbsp;件の引用リツイート</div>`)
+		}
+		
+		if (like_count) {
+			counts.push(`<div><span class="count">${like_count}</span>&nbsp;件のいいね</div>`)
+		}
+
+		// if (reply_count) {
+		// 	counts.push(`<div><span class="count">${reply_count}</span>&nbsp;件の返信</div>`)
+		// }
+
+		return counts.join('')
 	}
 
 	// public get media_url(): string {

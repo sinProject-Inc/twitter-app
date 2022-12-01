@@ -38,6 +38,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 			tweets,
 		}
 	} catch (error) {
+		console.error(error)
 		throw redirect(302, '/sign_out')
+		// throw Error('Error loading tweets')
 	}
 }
