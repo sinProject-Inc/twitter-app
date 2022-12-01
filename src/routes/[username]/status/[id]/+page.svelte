@@ -4,7 +4,8 @@
 	import Like from '$lib/icons/like.svelte'
 	import Reply from '$lib/icons/reply.svelte'
 	import RetweetSmall from '$lib/icons/retweet_small.svelte'
-	import Retweet from '$lib/icons/retweet_small.svelte'
+	import Retweet from '$lib/icons/retweet.svelte'
+	import ThreeDot from '$lib/icons/three_dot.svelte'
 	import UpArrow from '$lib/icons/up_arrow.svelte'
 	import { Tweet } from '$lib/tweet'
 	import { Util } from '$lib/util'
@@ -56,12 +57,19 @@
 							<img class="avatar" src={tweet.profile_image_url} alt="avatar" />
 						</a>
 					</div>
-					<div class="username_column">
-						<div class="name overflow_ellipsis">
-							<a href={tweet.profile_url}>{tweet.name}</a>
+					<div class="username_row">
+						<div class="username_column">
+							<div class="name overflow_ellipsis">
+								<a href={tweet.profile_url}>{tweet.name}</a>
+							</div>
+							<div class="username overflow_ellipsis">
+								<a href={tweet.profile_url}>@{tweet.username}</a>
+							</div>
 						</div>
-						<div class="username overflow_ellipsis">
-							<a href={tweet.profile_url}>@{tweet.username}</a>
+						<div class="spacer" />
+						<div class="three_dot_icon">
+							<div class="tap_area" />
+							<ThreeDot />
 						</div>
 					</div>
 				</div>
@@ -331,15 +339,21 @@
 		color: var(--text-color);
 	}
 
-	.username_column {
+	.username_row {
 		display: flex;
-		flex-direction: column;
-		/* gap: 4px; */
-		align-items: flex-start;
+		flex-direction: row;
+		gap: 4px;
+		align-items: center;
+		flex: auto;
 
 		font-weight: 400;
 		font-size: 15px;
 		line-height: 20px;
+	}
+
+	.username_column {
+		display: flex;
+		flex-direction: column;
 	}
 
 	.overflow_ellipsis {
@@ -363,6 +377,10 @@
 
 	.username a:hover {
 		text-decoration: none;
+	}
+
+	.spacer {
+		flex: auto;
 	}
 
 	.bottom_element {
@@ -417,7 +435,6 @@
 		color: var(--gray-color);
 		line-height: 16px;
 		font-size: 13px;
-		fill: currentColor;
 	}
 
 	.action {
@@ -428,11 +445,20 @@
 		font-size: 14px;
 	}
 
+	.three_dot_icon {
+		width: 18.75px;
+		height: 18.75px;
+		position: relative;
+		margin: 0 auto;
+		fill: var(--gray-color);
+	}
+
 	.action_icon {
 		width: 22.5px;
 		height: 22.5px;
 		position: relative;
 		margin: 0 auto;
+		fill: var(--gray-color);
 	}
 
 	.tap_area {

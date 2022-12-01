@@ -7,6 +7,7 @@
 	import { Util } from '$lib/util'
 	import type { PageData } from './$types'
 	import UpArrow from '$lib/icons/up_arrow.svelte'
+	import ThreeDot from '$lib/icons/three_dot.svelte'
 
 	export let data: PageData
 
@@ -77,6 +78,11 @@
 									<a href={tweet.status_url}>
 										<time datetime={tweet.created_at}>{tweet.elapsed_time}</time>
 									</a>
+								</div>
+								<div class="spacer" />
+								<div class="action_icon">
+									<div class="tap_area" />
+									<ThreeDot />
 								</div>
 							</div>
 							<div dir="auto">
@@ -336,6 +342,10 @@
 		color: var(--gray-color);
 	}
 
+	.spacer {
+		flex: auto;
+	}
+
 	.username a:hover {
 		text-decoration: none;
 	}
@@ -357,7 +367,6 @@
 		color: var(--gray-color);
 		font-size: 13px;
 		line-height: 16px;
-		fill: currentColor;
 	}
 
 	.action {
@@ -382,6 +391,7 @@
 		width: 17.5px;
 		height: 17.5px;
 		position: relative;
+		fill: var(--gray-color);;
 	}
 
 	.tap_area {
