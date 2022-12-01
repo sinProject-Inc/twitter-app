@@ -237,7 +237,7 @@
 		background-color: rgba(255, 255, 255, 0.85);
 		padding-left: 16px;
 		padding-right: 16px;
-		font-size: 20px;
+		font-size: 22px;
 		font-weight: 700;
 	}
 
