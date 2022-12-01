@@ -216,6 +216,7 @@
 	.main_container {
 		margin: 0 auto;
 		max-width: 600px;
+		min-width: 0;
 	}
 
 	.header {

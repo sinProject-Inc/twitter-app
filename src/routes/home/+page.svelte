@@ -2,10 +2,11 @@
 	import Like from '$lib/icons/like.svelte'
 	import Reply from '$lib/icons/reply.svelte'
 	import RetweetSmall from '$lib/icons/retweet_small.svelte'
-	import Retweet from '$lib/icons/retweet_small.svelte'
+	import Retweet from '$lib/icons/retweet.svelte'
 	import { Tweet } from '$lib/tweet'
 	import { Util } from '$lib/util'
 	import type { PageData } from './$types'
+	import UpArrow from '$lib/icons/up_arrow.svelte'
 
 	export let data: PageData
 
@@ -24,7 +25,7 @@
 		const selection = window.getSelection()
 
 		if (selection?.isCollapsed) {
-			location.href = tweet.status_url;
+			location.href = tweet.status_url
 		}
 	}
 </script>
@@ -39,121 +40,136 @@
 
 <br />
 
-<!-- {$page.data.user.twitter_id} -->
-
-{#each tweets_data as tweet_data}
-	{@const tweet = new Tweet(tweet_data, user_data_map, referenced_tweets_data_map, media_data_map)}
-	<div class="element" on:click={() => on_click_tweet(tweet)} on:keypress>
-		{#if tweet.is_retweet}
-			<div class="retweet_row">
-				<div class="avatar_above"><div class="retweet_icon"><RetweetSmall /></div></div>
-				{tweet.retweet_user_name}さんがリツイートしました
-			</div>
-		{/if}
-		<div class="tweet">
-			<div class="avatar_container">
-				<a href={tweet.profile_url}>
-					<img class="avatar" src={tweet.profile_image_url} alt="avatar" />
-				</a>
-			</div>
-			<div class="tweet_body">
-				<div class="text_column">
-					<div class="username_row">
-						<div class="name overflow_ellipsis">
-							<a href={tweet.profile_url}>{tweet.name}</a>
-						</div>
-						<div class="username overflow_ellipsis">
-							<a href={tweet.profile_url}>@{tweet.username}</a>
-						</div>
-						<div>·</div>
-						<div class="time">
-							<a href={tweet.status_url}>
-								<time datetime={tweet.created_at}>{tweet.elapsed_time}</time>
-							</a>
-						</div>
-					</div>
-					<div dir="auto">
-						{@html tweet.html_text}
-					</div>
-				</div>
-
-				{#if tweet.media_count === 1}
-					<div class="media_frame">
-						<img alt="画像" src={tweet.media_url_0} class="media" />
-					</div>
-				{:else if tweet.media_count === 2}
-					<div class="media_frame media_column media_frame_tile">
-						<div class="media_row">
-							<div class="media_cell">
-								<img alt="画像" src={tweet.media_url_0} class="media" />
-							</div>
-							<div class="media_cell">
-								<img alt="画像" src={tweet.media_url_1} class="media" />
-							</div>
-						</div>
-					</div>
-				{:else if tweet.media_count === 3}
-					<div class="media_frame media_row media_frame_tile">
-						<div class="media_cell">
-							<img alt="画像" src={tweet.media_url_0} class="media" />
-						</div>
-						<div class="media_column">
-							<div class="media_cell">
-								<img alt="画像" src={tweet.media_url_1} class="media" />
-							</div>
-							<div class="media_cell">
-								<img alt="画像" src={tweet.media_url_2} class="media" />
-							</div>
-						</div>
-					</div>
-				{:else if tweet.media_count === 4}
-					<div class="media_frame media_column media_frame_tile">
-						<div class="media_row">
-							<div class="media_cell">
-								<img alt="画像" src={tweet.media_url_0} class="media" />
-							</div>
-							<div class="media_cell">
-								<img alt="画像" src={tweet.media_url_1} class="media" />
-							</div>
-						</div>
-						<div class="media_row">
-							<div class="media_cell">
-								<img alt="画像" src={tweet.media_url_2} class="media" />
-							</div>
-							<div class="media_cell">
-								<img alt="画像" src={tweet.media_url_3} class="media" />
-							</div>
-						</div>
+<div class="root_container">
+	<div />
+	<div class="main_container">
+		{#each tweets_data as tweet_data}
+			{@const tweet = new Tweet(
+				tweet_data,
+				user_data_map,
+				referenced_tweets_data_map,
+				media_data_map
+			)}
+			<div class="element" on:click={() => on_click_tweet(tweet)} on:keypress>
+				{#if tweet.is_retweet}
+					<div class="retweet_row">
+						<div class="avatar_above"><div class="retweet_icon"><RetweetSmall /></div></div>
+						{tweet.retweet_user_name}さんがリツイートしました
 					</div>
 				{/if}
+				<div class="tweet">
+					<div class="avatar_container">
+						<a href={tweet.profile_url}>
+							<img class="avatar" src={tweet.profile_image_url} alt="avatar" />
+						</a>
+					</div>
+					<div class="tweet_body">
+						<div class="text_column">
+							<div class="username_row">
+								<div class="name overflow_ellipsis">
+									<a href={tweet.profile_url}>{tweet.name}</a>
+								</div>
+								<div class="username overflow_ellipsis">
+									<a href={tweet.profile_url}>@{tweet.username}</a>
+								</div>
+								<div>·</div>
+								<div class="time">
+									<a href={tweet.status_url}>
+										<time datetime={tweet.created_at}>{tweet.elapsed_time}</time>
+									</a>
+								</div>
+							</div>
+							<div dir="auto">
+								{@html tweet.html_text}
+							</div>
+						</div>
 
-				<div class="action_row">
-					<div class="action">
-						<div class="action_icon">
-							<div class="tap_area" />
-							<Reply />
+						{#if tweet.media_count === 1}
+							<div class="media_frame">
+								<img alt="画像" src={tweet.media_url_0} class="media" />
+							</div>
+						{:else if tweet.media_count === 2}
+							<div class="media_frame media_column media_frame_tile">
+								<div class="media_row">
+									<div class="media_cell">
+										<img alt="画像" src={tweet.media_url_0} class="media" />
+									</div>
+									<div class="media_cell">
+										<img alt="画像" src={tweet.media_url_1} class="media" />
+									</div>
+								</div>
+							</div>
+						{:else if tweet.media_count === 3}
+							<div class="media_frame media_row media_frame_tile">
+								<div class="media_cell">
+									<img alt="画像" src={tweet.media_url_0} class="media" />
+								</div>
+								<div class="media_column">
+									<div class="media_cell">
+										<img alt="画像" src={tweet.media_url_1} class="media" />
+									</div>
+									<div class="media_cell">
+										<img alt="画像" src={tweet.media_url_2} class="media" />
+									</div>
+								</div>
+							</div>
+						{:else if tweet.media_count === 4}
+							<div class="media_frame media_column media_frame_tile">
+								<div class="media_row">
+									<div class="media_cell">
+										<img alt="画像" src={tweet.media_url_0} class="media" />
+									</div>
+									<div class="media_cell">
+										<img alt="画像" src={tweet.media_url_1} class="media" />
+									</div>
+								</div>
+								<div class="media_row">
+									<div class="media_cell">
+										<img alt="画像" src={tweet.media_url_2} class="media" />
+									</div>
+									<div class="media_cell">
+										<img alt="画像" src={tweet.media_url_3} class="media" />
+									</div>
+								</div>
+							</div>
+						{/if}
+
+						<div class="action_row">
+							<div class="action">
+								<div class="action_icon">
+									<div class="tap_area" />
+									<Reply />
+								</div>
+								<div class="icon_text overflow_ellipsis">{tweet.reply_count}</div>
+							</div>
+							<div class="action">
+								<div class="action_icon">
+									<div class="tap_area" />
+									<Retweet />
+								</div>
+								<div class="icon_text overflow_ellipsis">{tweet.retweet_count}</div>
+							</div>
+							<div class="action">
+								<div class="action_icon">
+									<div class="tap_area" />
+									<Like />
+								</div>
+								<div class="icon_text overflow_ellipsis">{tweet.like_count}</div>
+							</div>
+							<div class="action_up_arrow">
+								<div class="action_icon">
+									<div class="tap_area" />
+									<UpArrow />
+								</div>
+							</div>
 						</div>
-						<div class="icon_text overflow_ellipsis">{tweet.reply_count}</div>
-					</div>
-					<div class="action">
-						<div class="action_icon">
-							<div class="tap_area" />
-							<Retweet />
-						</div>
-						<div class="icon_text overflow_ellipsis">{tweet.retweet_count}</div>
-					</div>
-					<div class="action">
-						<div class="action_icon">
-							<div class="tap_area" />
-							<Like />
-						</div>
-						<div class="icon_text overflow_ellipsis">{tweet.like_count}</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		{/each}
 	</div>
-{/each}
+	<div />
+</div>
 
 <style>
 	:global(body) {
@@ -165,6 +181,7 @@
 		--gray-color: rgb(83, 100, 113);
 		--text-color: rgb(15, 20, 25);
 		--link-color: rgb(29, 155, 240);
+		--border-color: rgb(239, 243, 244);
 	}
 
 	:global(a) {
@@ -184,9 +201,28 @@
 		color: var(--link-color);
 	}
 
+	.root_container {
+		display: flex;
+		flex-direction: row;
+		gap: 1px;
+		background-color: var(--border-color);
+		min-height: 100vh;
+	}
+
+	.root_container > * {
+		flex: auto;
+		background-color: white;
+	}
+
+	.main_container {
+		margin: 0 auto;
+		max-width: 600px;
+		min-width: 0;
+	}
+
 	.element {
 		padding: 16px;
-		border-bottom: 1px solid rgb(239, 243, 244);
+		border-bottom: 1px solid var(--border-color);
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
@@ -256,7 +292,7 @@
 		min-width: 0;
 		flex: auto;
 
-		font-size: 15px;
+		font-size: 16px;
 		line-height: 20px;
 		font-weight: 400;
 	}
@@ -332,6 +368,12 @@
 		flex: 1;
 	}
 
+	.action_up_arrow {
+		display: flex;
+		flex-direction: row;
+		flex: 0;
+	}
+
 	.icon_text {
 		font-size: 14px;
 	}
@@ -357,7 +399,6 @@
 		border-style: solid;
 		border-width: 1px;
 		border-color: rgb(207, 217, 222);
-		max-width: 506px;
 		/* max-height: 285px; */
 		overflow: hidden;
 	}
