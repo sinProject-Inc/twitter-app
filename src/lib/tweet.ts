@@ -195,15 +195,15 @@ export class Tweet {
 	}
 
 	private _media_url(index: number): string {
-		console.log('text', this.text)
+		// console.log('text', this.text)
 
 		const media_key = this._target_tweet_data.attachments?.media_keys?.[index]
-		console.log('media_key', media_key)
+		// console.log('media_key', media_key)
 
 		if (!media_key) return ''
 
 		const media_data = this._media_data_map.get(media_key)
-		console.log('media_data', media_data)
+		// console.log('media_data', media_data)
 
 		if (!media_data) return ''
 
@@ -211,7 +211,7 @@ export class Tweet {
 			const photo_data = media_data as components['schemas']['Photo']
 			const url = photo_data.url ?? 'no photo url'
 
-			console.log('photo url', url)
+			// console.log('photo url', url)
 			return url
 		}
 
@@ -220,7 +220,7 @@ export class Tweet {
 
 			const url = animated_gif_data.preview_image_url ?? 'no animated_git preview_image_url'
 
-			console.log('animated_gif url', url)
+			// console.log('animated_gif url', url)
 			return url
 		}
 
@@ -228,11 +228,11 @@ export class Tweet {
 			const video_data = media_data as components['schemas']['Video']
 			const url = video_data.preview_image_url ?? 'no video preview_image_url'
 
-			console.log('animated_gif url', url)
+			// console.log('animated_gif url', url)
 			return url
 		}
 
-		console.log('unknown type', media_data)
+		// console.log('unknown type', media_data)
 
 		return ''
 	}
