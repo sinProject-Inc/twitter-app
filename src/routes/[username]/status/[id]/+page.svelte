@@ -5,6 +5,7 @@
 	import Reply from '$lib/icons/reply.svelte'
 	import RetweetSmall from '$lib/icons/retweet_small.svelte'
 	import Retweet from '$lib/icons/retweet_small.svelte'
+	import UpArrow from '$lib/icons/up_arrow.svelte'
 	import { Tweet } from '$lib/tweet'
 	import { Util } from '$lib/util'
 	import type { PageData } from './$types'
@@ -133,9 +134,8 @@
 					</div>
 					ツイートアナリティクスを表示
 				</div>
-				<div>
-					<div class="count">999</div>
-					&nbsp;件のいいね
+				<div class="counts_row">
+					{@html tweet.counts_html_text}
 				</div>
 				<div class="action_row">
 					<div class="action" style="text-align: center">
@@ -159,7 +159,7 @@
 					<div class="action">
 						<div class="action_icon">
 							<div class="tap_area" />
-							<Like />
+							<UpArrow />
 						</div>
 					</div>
 				</div>
@@ -333,7 +333,7 @@
 	.username_column {
 		display: flex;
 		flex-direction: column;
-		gap: 4px;
+		/* gap: 4px; */
 		align-items: flex-start;
 
 		font-weight: 400;
@@ -374,7 +374,7 @@
 
 	.bottom_element > * {
 		background-color: white;
-		height: 50px;
+		min-height: 50px;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -394,7 +394,14 @@
 		height: 20px;
 	}
 
-	.count {
+	.counts_row {
+		display: flex;
+		flex-direction: row;
+		gap: 20px;
+		flex-wrap: wrap;
+	}
+
+	:global(.count) {
 		color: var(--text-color);
 		font-weight: 700;
 	}
@@ -442,9 +449,10 @@
 		border-style: solid;
 		border-width: 1px;
 		border-color: rgb(207, 217, 222);
-		max-width: 506px;
-		/* max-height: 285px; */
 		overflow: hidden;
+
+		display: flex;
+		flex-direction: row;
 	}
 
 	.media_frame_tile {
