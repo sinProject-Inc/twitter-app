@@ -231,6 +231,7 @@
 	.header {
 		-webkit-position: sticky;
 		position: sticky;
+		z-index: 3;
 		top: 0;
 		height: 53px;
 		backdrop-filter: blur(12px);
