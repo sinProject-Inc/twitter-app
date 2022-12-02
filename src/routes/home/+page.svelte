@@ -44,6 +44,25 @@
 <div class="root_container">
 	<div />
 	<div class="main_container">
+		<div class="header">
+			<div class="header_row">
+				<div class="header_icon">
+					<img
+						src="/images/sinProject-07.png"
+						alt="ロゴ"
+						width="100%"
+						style="position: absolute; top: 2px;"
+					/>
+				</div>
+				最新ツイート
+				<div class="spacer" />
+				<div class="header_icon">
+					<div class="tap_area" />
+					<ThreeDot />
+				</div>
+			</div>
+		</div>
+
 		{#each tweets_data as tweet_data}
 			{@const tweet = new Tweet(
 				tweet_data,
@@ -226,6 +245,32 @@
 		min-width: 0;
 	}
 
+	.header {
+		-webkit-position: sticky;
+		position: sticky;
+		top: 0;
+		height: 53px;
+		backdrop-filter: blur(12px);
+		background-color: rgba(255, 255, 255, 0.85);
+		padding-left: 16px;
+		padding-right: 16px;
+		font-size: 22px;
+		font-weight: 700;
+	}
+
+	.header_row {
+		display: flex;
+		align-items: center;
+		height: 100%;
+		gap: 40px;
+	}
+
+	.header_icon {
+		width: 20px;
+		height: 20px;
+		position: relative;
+	}
+
 	.element {
 		padding: 16px;
 		border-bottom: 1px solid var(--border-color);
@@ -391,7 +436,7 @@
 		width: 17.5px;
 		height: 17.5px;
 		position: relative;
-		fill: var(--gray-color);;
+		fill: var(--gray-color);
 	}
 
 	.tap_area {
