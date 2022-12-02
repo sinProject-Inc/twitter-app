@@ -40,8 +40,9 @@ npm install
 ```env
 DATABASE_URL="mysql://user:password@localhost:3306/twitter-app"
 
-TWITTER_CLIENT_ID="{client-id}"
-TWITTER_CLIENT_SECRET="{client-secret}"
+TWITTER_CLIENT_ID = {client-id}
+TWITTER_CLIENT_SECRET = {client-secret}
+TWITTER_CALLBACK_URL = http://localhost:5173/sign_in
 ```
 
 5. Push the initial schema to the database:
