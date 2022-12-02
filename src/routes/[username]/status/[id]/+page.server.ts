@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit'
-import Client from 'twitter-api-sdk'
+import { Client } from 'twitter-api-sdk'
 import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async ({ locals, params }) => {

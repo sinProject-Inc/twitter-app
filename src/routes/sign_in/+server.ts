@@ -1,18 +1,20 @@
-import { TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET } from '$env/static/private'
+import { TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET, TWITTER_CALLBACK_URL } from '$env/static/private'
 import { Auth } from '$lib/auth'
 import { Database } from '$lib/database'
 import { redirect, type RequestHandler } from '@sveltejs/kit'
-import Client, { auth } from 'twitter-api-sdk'
+import { Client, auth } from 'twitter-api-sdk'
 // import { TwitterApi } from 'twitter-api-v2'
 
+console.log('TWITTER_CALLBACK_URL', TWITTER_CALLBACK_URL)
+
 const authClient = new auth.OAuth2User({
-	client_id: TWITTER_CLIENT_ID as string,
-	client_secret: TWITTER_CLIENT_SECRET as string,
-	callback: 'http://localhost:5173/sign_in',
+	client_id: TWITTER_CLIENT_ID,
+	client_secret: TWITTER_CLIENT_SECRET,
+	callback: TWITTER_CALLBACK_URL,
 	scopes: ['tweet.read', 'users.read', 'tweet.write'],
 })
 
-const client = new Client(authClient)
+const twitterClient = new Client(authClient)
 const STATE = 'my-state-twitter-app'
 
 export const POST: RequestHandler = async () => {
@@ -41,7 +43,7 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 
 		if (!access_token) return new Response('No token', { status: 500 })
 
-		const twitter_user = await client.users.findMyUser()
+		const twitter_user = await twitterClient.users.findMyUser()
 		const twitter_id = twitter_user.data?.id ?? ''
 		const username = twitter_user.data?.username ?? ''
 		const user_key = `twitter:${twitter_id}:${username}`

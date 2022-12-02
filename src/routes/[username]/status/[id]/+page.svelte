@@ -443,10 +443,6 @@
 		flex: 1;
 	}
 
-	.icon_text {
-		font-size: 14px;
-	}
-
 	.three_dot_icon {
 		width: 18.75px;
 		height: 18.75px;
