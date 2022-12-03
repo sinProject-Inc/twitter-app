@@ -1,13 +1,14 @@
 <script lang="ts">
 	import Like from '$lib/icons/like.svelte'
 	import Reply from '$lib/icons/reply.svelte'
-	import RetweetSmall from '$lib/icons/retweet_small.svelte'
 	import Retweet from '$lib/icons/retweet.svelte'
+	import RetweetSmall from '$lib/icons/retweet_small.svelte'
+	import ThreeDot from '$lib/icons/three_dot.svelte'
+	import UpArrow from '$lib/icons/up_arrow.svelte'
 	import { Tweet } from '$lib/tweet'
 	import { Util } from '$lib/util'
+	import '../app.css'
 	import type { PageData } from './$types'
-	import UpArrow from '$lib/icons/up_arrow.svelte'
-	import ThreeDot from '$lib/icons/three_dot.svelte'
 
 	export let data: PageData
 
@@ -53,12 +54,12 @@
 
 <br />
 
-<div class="root_container">
+<div class="flex_row gap_border root_container">
 	<div />
 	<div class="center_container">
 		<div class="header">
-			<div class="header_row">
-				<div class="header_icon">
+			<div class="flex_row align_items_center header_row">
+				<div class="header_icon tap_area_container">
 					<img
 						src="/images/sinProject-07.png"
 						alt="ロゴ"
@@ -67,24 +68,24 @@
 					/>
 				</div>
 				最新ツイート
-				<div class="spacer" />
-				<div class="header_icon">
+				<div class="flex_auto" />
+				<div class="header_icon tap_area_container">
 					<div class="tap_area" />
 					<ThreeDot />
 				</div>
 			</div>
 		</div>
 
-		<div class="main_container">
-			<div class="post_container">
+		<div class="flex_column gap_border">
+			<div class="flex_row post_container">
 				<div class="avatar_container">
 					<img
-						class="avatar"
+						class="avatar_icon"
 						src="https://pbs.twimg.com/profile_images/1412275348805349376/J5YrITSD_x96.jpg"
 						alt="avatar"
 					/>
 				</div>
-				<div class="post_main_container">
+				<div class="flex_auto flex_column gap_border">
 					<div class="post_body_container">
 						<div class="post_hint" bind:this={post_hint_element}>いまどうしてる？</div>
 						<div
@@ -94,14 +95,14 @@
 							contenteditable="true"
 						/>
 					</div>
-					<div class="flex_row padding_top_16">
+					<div class="flex_row align_items_center padding_top_16">
 						<div class="flex_auto" />
-						<a href="" class="button">ツイートする</a>
+						<a href="/api/post" class="button">ツイートする</a>
 					</div>
 				</div>
 			</div>
 
-			<div class="tweet_list">
+			<div class="flex_column gap_border">
 				{#each tweets_data as tweet_data}
 					{@const tweet = new Tweet(
 						tweet_data,
@@ -109,22 +110,28 @@
 						referenced_tweets_data_map,
 						media_data_map
 					)}
-					<div class="tweet_container" on:click={() => on_click_tweet(tweet)} on:keypress>
+					<div
+						class="flex_column tweet_container"
+						on:click={() => on_click_tweet(tweet)}
+						on:keypress
+					>
 						{#if tweet.is_retweet}
-							<div class="retweet_row">
-								<div class="avatar_above"><div class="retweet_icon"><RetweetSmall /></div></div>
+							<div class="flex_row align_items_center retweet_row">
+								<div class="flex_row align_items_center avatar_above">
+									<div class="retweet_icon"><RetweetSmall /></div>
+								</div>
 								{tweet.retweet_user_name}さんがリツイートしました
 							</div>
 						{/if}
-						<div class="tweet">
+						<div class="flex_row tweet_element">
 							<div class="avatar_container">
 								<a href={tweet.profile_url}>
-									<img class="avatar" src={tweet.profile_image_url} alt="avatar" />
+									<img class="avatar_icon" src={tweet.profile_image_url} alt="avatar" />
 								</a>
 							</div>
-							<div class="tweet_body">
-								<div class="text_column">
-									<div class="username_row">
+							<div class="flex_column tweet_body">
+								<div class="flex_column text_column">
+									<div class="flex_row username_row">
 										<div class="name overflow_ellipsis">
 											<a href={tweet.profile_url}>{tweet.name}</a>
 										</div>
@@ -137,8 +144,8 @@
 												<time datetime={tweet.created_at}>{tweet.elapsed_time}</time>
 											</a>
 										</div>
-										<div class="spacer" />
-										<div class="action_icon">
+										<div class="flex_auto" />
+										<div class="action_icon tap_area_container">
 											<div class="tap_area" />
 											<ThreeDot />
 										</div>
@@ -153,8 +160,8 @@
 										<img alt="画像" src={tweet.media_url_0} class="media" />
 									</div>
 								{:else if tweet.media_count === 2}
-									<div class="media_frame media_column media_frame_tile">
-										<div class="media_row">
+									<div class="media_frame flex_column media_column media_frame_tile">
+										<div class="flex_row media_row">
 											<div class="media_cell">
 												<img alt="画像" src={tweet.media_url_0} class="media" />
 											</div>
@@ -168,7 +175,7 @@
 										<div class="media_cell">
 											<img alt="画像" src={tweet.media_url_0} class="media" />
 										</div>
-										<div class="media_column">
+										<div class="flex_column media_column">
 											<div class="media_cell">
 												<img alt="画像" src={tweet.media_url_1} class="media" />
 											</div>
@@ -178,8 +185,8 @@
 										</div>
 									</div>
 								{:else if tweet.media_count === 4}
-									<div class="media_frame media_column media_frame_tile">
-										<div class="media_row">
+									<div class="media_frame flex_column media_column media_frame_tile">
+										<div class="flex_row media_row">
 											<div class="media_cell">
 												<img alt="画像" src={tweet.media_url_0} class="media" />
 											</div>
@@ -187,7 +194,7 @@
 												<img alt="画像" src={tweet.media_url_1} class="media" />
 											</div>
 										</div>
-										<div class="media_row">
+										<div class="flex_row media_row">
 											<div class="media_cell">
 												<img alt="画像" src={tweet.media_url_2} class="media" />
 											</div>
@@ -198,30 +205,30 @@
 									</div>
 								{/if}
 
-								<div class="action_row">
-									<div class="action">
-										<div class="action_icon">
+								<div class="flex_row align_items_center action_row">
+									<div class="flex_row align_items_center action">
+										<div class="action_icon tap_area_container">
 											<div class="tap_area" />
 											<Reply />
 										</div>
 										<div class="icon_text overflow_ellipsis">{tweet.reply_count}</div>
 									</div>
-									<div class="action">
-										<div class="action_icon">
+									<div class="flex_row align_items_center action">
+										<div class="action_icon tap_area_container">
 											<div class="tap_area" />
 											<Retweet />
 										</div>
 										<div class="icon_text overflow_ellipsis">{tweet.retweet_count}</div>
 									</div>
-									<div class="action">
-										<div class="action_icon">
+									<div class="flex_row align_items_center action">
+										<div class="action_icon tap_area_container">
 											<div class="tap_area" />
 											<Like />
 										</div>
 										<div class="icon_text overflow_ellipsis">{tweet.like_count}</div>
 									</div>
-									<div class="action_up_arrow">
-										<div class="action_icon">
+									<div class="flex_row align_items_center action_up_arrow">
+										<div class="action_icon tap_area_container">
 											<div class="tap_area" />
 											<UpArrow />
 										</div>
@@ -238,141 +245,13 @@
 </div>
 
 <style>
-	:global(body) {
-		font-family: 'Segoe UI', Meiryo, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-		margin: 0;
-	}
-
-	:root {
-		--background-color: #fff;
-		--border-color: rgb(239, 243, 244);
-		--gray-color: rgb(83, 100, 113);
-		--text-color: rgb(15, 20, 25);
-		--link-color: rgb(29, 155, 240);
-		--link-hover-color: rgb(26, 140, 216);
-	}
-
-	:global(a) {
-		text-decoration: none;
-	}
-	:global(a:link) {
-		color: var(--link-color);
-	}
-	:global(a:visited) {
-		color: var(--link-color);
-	}
-	:global(a:hover) {
-		color: var(--link-color);
-		text-decoration: underline;
-	}
-	:global(a:active) {
-		color: var(--link-color);
-	}
-
-	[contenteditable] {
-		outline: none;
-	}
-
-	.root_container {
-		display: flex;
-		flex-direction: row;
-		gap: 1px;
-		background-color: var(--border-color);
-		min-height: 100vh;
-	}
-
-	.root_container > * {
-		flex: auto;
-		background-color: var(--background-color);
-	}
-
-	.center_container {
-		margin: 0 auto;
-		max-width: 600px;
-		min-width: 0;
-	}
-
-	.header {
-		-webkit-position: sticky;
-		position: sticky;
-		z-index: 3;
-		top: 0;
-		height: 53px;
-		backdrop-filter: blur(12px);
-		background-color: rgba(255, 255, 255, 0.85);
-		padding-left: 16px;
-		padding-right: 16px;
-		font-size: 22px;
-		font-weight: 700;
-	}
-
-	.header_row {
-		display: flex;
-		align-items: center;
-		height: 100%;
-		gap: 40px;
-	}
-
-	.header_icon {
-		width: 20px;
-		height: 20px;
-		position: relative;
-	}
-
-	.main_container {
-		display: flex;
-		flex-direction: column;
-		gap: 1px;
-		background-color: var(--border-color);
-	}
-
 	.post_container {
 		padding: 16px;
-		display: flex;
-		flex-direction: row;
 		gap: 12px;
-		background-color: var(--background-color);
-	}
-
-	.post_main_container {
-		flex: auto;
-
-		display: flex;
-		flex-direction: column;
-		gap: 1px;
-		background-color: var(--border-color);
-	}
-
-	.flex_row {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
 	}
 
 	.padding_top_16 {
 		padding-top: 16px;
-	}
-
-	.flex_auto {
-		flex: auto;
-	}
-
-	.button {
-		background-color:var(--link-color);
-		color: var(--background-color);
-		border-radius: 9999px;
-		padding: 8px 18px;
-		font-weight: 700;
-		text-decoration: none;	
-		transition: background-color 0.2s;
-	}
-
-	.button:hover {
-		background-color: var(--link-hover-color);
-	}
-
-	.post_main_container > * {
-		background-color: var(--background-color);
 	}
 
 	.post_body_container {
@@ -393,18 +272,8 @@
 		position: relative;
 	}
 
-	.tweet_list {
-		display: flex;
-		flex-direction: column;
-		gap: 1px;
-		background-color: var(--border-color);
-	}
-
 	.tweet_container {
 		padding: 16px;
-		background-color: var(--background-color);
-		display: flex;
-		flex-direction: column;
 		gap: 6px;
 		cursor: pointer;
 	}
@@ -414,61 +283,16 @@
 		background-color: rgb(245, 248, 250);
 	}
 
-	.retweet_row {
-		display: flex;
-		flex-direction: row;
-		gap: 12px;
-		align-items: center;
-		color: var(--gray-color);
-		font-size: 13px;
-		line-height: 16px;
-		font-weight: 700;
-		fill: currentColor;
-	}
-
 	.avatar_above {
 		min-width: 48px;
-		display: flex;
-		align-items: center;
 		justify-content: flex-end;
 	}
 
-	.retweet_icon {
-		width: 16px;
-		height: 16px;
-	}
-
-	.tweet {
-		display: flex;
-		flex-direction: row;
+	.tweet_element {
 		gap: 12px;
 	}
 
-	.avatar_container {
-		border-radius: 50%;
-		border: 0;
-		width: 48px;
-		min-width: 48px;
-		height: 48px;
-		overflow: hidden;
-	}
-
-	.avatar {
-		transition: 0.2s;
-		width: 100%;
-		height: 100%;
-		background-color: black;
-	}
-
-	.avatar:hover {
-		transition: 0.2s;
-		filter: brightness(0.8);
-		/* opacity: 0.8; */
-	}
-
 	.tweet_body {
-		display: flex;
-		flex-direction: column;
 		gap: 12px;
 		min-width: 0;
 		flex: auto;
@@ -479,50 +303,17 @@
 	}
 
 	.text_column {
-		display: flex;
-		flex-direction: column;
 		gap: 8px;
 		min-width: 0;
 		overflow-wrap: break-word;
-		color: var(--text-color);
 	}
 
 	.username_row {
-		display: flex;
-		flex-direction: row;
 		gap: 4px;
-		align-items: center;
 
 		font-weight: 400;
 		font-size: 15px;
 		line-height: 20px;
-	}
-
-	.overflow_ellipsis {
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	.name {
-		color: rgb(15, 20, 25);
-		font-weight: 700;
-	}
-
-	.name a {
-		color: rgb(15, 20, 25);
-	}
-
-	.username a {
-		color: var(--gray-color);
-	}
-
-	.spacer {
-		flex: auto;
-	}
-
-	.username a:hover {
-		text-decoration: none;
 	}
 
 	.time {
@@ -534,10 +325,7 @@
 	}
 
 	.action_row {
-		display: flex;
-		flex-direction: row;
 		gap: 10px;
-		align-items: center;
 
 		color: var(--gray-color);
 		font-size: 13px;
@@ -545,16 +333,11 @@
 	}
 
 	.action {
-		display: flex;
-		flex-direction: row;
 		gap: 10px;
-		align-items: center;
 		flex: 1;
 	}
 
 	.action_up_arrow {
-		display: flex;
-		flex-direction: row;
 		flex: 0;
 	}
 
@@ -565,58 +348,6 @@
 	.action_icon {
 		width: 17.5px;
 		height: 17.5px;
-		position: relative;
 		fill: var(--gray-color);
-	}
-
-	.tap_area {
-		cursor: pointer;
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		margin: -8px;
-	}
-
-	.media_frame {
-		border-radius: 16px;
-		border-style: solid;
-		border-width: 1px;
-		border-color: rgb(207, 217, 222);
-		/* max-height: 285px; */
-		overflow: hidden;
-	}
-
-	.media_frame_tile {
-		aspect-ratio: 506 / 282;
-	}
-
-	.media_column {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-
-		flex: 1;
-	}
-
-	.media_row {
-		display: flex;
-		flex-direction: row;
-		gap: 2px;
-
-		min-height: 0;
-		flex: 1;
-	}
-
-	.media_cell {
-		flex: 1;
-		min-height: 0;
-	}
-
-	.media {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
 	}
 </style>
