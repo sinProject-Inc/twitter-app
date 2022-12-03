@@ -46,8 +46,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 			expansions: [
 				'attachments.media_keys',
 			],
-			'tweet.fields': ['created_at', 'public_metrics', 'entities'],
-			'user.fields': ['profile_image_url'],
 			'media.fields': ['preview_image_url', 'url'],
 		})
 
