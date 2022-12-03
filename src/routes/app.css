@@ -1,0 +1,229 @@
+:root {
+	--background-color: #fff;
+	--border-color: rgb(239, 243, 244);
+	--media-border-color: rgb(207, 217, 222);
+	--gray-color: rgb(83, 100, 113);
+	--text-color: rgb(15, 20, 25);
+	--link-color: rgb(29, 155, 240);
+	--link-hover-color: rgb(26, 140, 216);
+}
+
+body {
+	font-family: 'Segoe UI', Meiryo, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:link {
+	color: var(--link-color);
+}
+
+a:visited {
+	color: var(--link-color);
+}
+
+a:hover {
+	color: var(--link-color);
+	text-decoration: underline;
+}
+
+a:active {
+	color: var(--link-color);
+}
+
+.flex_row {
+	display: flex;
+	flex-direction: row;
+}
+
+.align_items_center {
+	align-items: center;
+}
+
+.flex_column {
+	display: flex;
+	flex-direction: column;
+}
+
+[contenteditable] {
+	outline: none;
+}
+
+.flex_auto {
+	flex: auto;
+}
+
+.gap_border {
+	gap: 1px;
+	background-color: var(--border-color) !important;
+}
+
+.gap_border>* {
+	background-color: var(--background-color);
+}
+
+.root_container {
+	min-height: 100vh;
+}
+
+.root_container>* {
+	flex: auto;
+}
+
+.center_container {
+	margin: 0 auto;
+	max-width: 600px;
+	min-width: 0;
+}
+
+.button {
+	background-color: var(--link-color);
+	color: var(--background-color) !important;
+	border-radius: 9999px;
+	padding: 8px 18px;
+	font-weight: 700;
+	text-decoration: none;
+	transition: background-color 0.2s;
+}
+
+.button:hover {
+	background-color: var(--link-hover-color);
+}
+
+.avatar_container {
+	border-radius: 50%;
+	border: 0;
+	width: 48px;
+	min-width: 48px;
+	height: 48px;
+	overflow: hidden;
+}
+
+.avatar_icon {
+	transition: 0.2s;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.avatar_icon:hover {
+	transition: 0.2s;
+	filter: brightness(0.8);
+}
+
+.tap_area_container {
+	position: relative;
+}
+
+.tap_area_container .tap_area {
+	cursor: pointer;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: -8px;
+}
+
+.header {
+	-webkit-position: sticky;
+	position: sticky;
+	z-index: 3;
+	top: 0;
+	height: 53px;
+	backdrop-filter: blur(12px);
+	background-color: rgba(255, 255, 255, 0.85);
+	padding-left: 16px;
+	padding-right: 16px;
+	font-size: 22px;
+	font-weight: 700;
+}
+
+.header_row {
+	height: 100%;
+	gap: 40px;
+}
+
+.header_icon {
+	width: 20px;
+	height: 20px;
+}
+
+.retweet_row {
+	gap: 12px;
+	color: var(--gray-color);
+	font-size: 13px;
+	line-height: 16px;
+	font-weight: 700;
+	fill: currentColor;
+}
+
+.overflow_ellipsis {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.name {
+	color: rgb(15, 20, 25);
+	font-weight: 700;
+}
+
+.name a {
+	color: rgb(15, 20, 25);
+}
+
+.username a {
+	color: var(--gray-color);
+}
+
+.username a:hover {
+	text-decoration: none;
+}
+
+.count {
+	color: var(--text-color);
+	font-weight: 700;
+}
+
+.media_frame {
+	border-radius: 16px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: var(--media-border-color);
+	overflow: hidden;
+}
+
+.media_frame_tile {
+	aspect-ratio: 506 / 282;
+}
+
+.media_column {
+	gap: 2px;
+	flex: 1;
+}
+
+.media_row {
+	gap: 2px;
+	flex: 1;
+	min-height: 0;
+}
+
+.media_cell {
+	flex: 1;
+	min-height: 0;
+}
+
+.media {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.retweet_icon {
+	width: 16px;
+	height: 16px;
+}
