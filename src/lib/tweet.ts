@@ -194,6 +194,24 @@ export class Tweet {
 		return this._target_tweet_data.attachments?.media_keys?.length ?? 0
 	}
 
+	public get media_data_exists(): boolean {
+		const media_keys = this._target_tweet_data.attachments?.media_keys
+
+		if (!media_keys) return true
+
+		for (const media_key of media_keys) {
+			const media_data = this._media_data_map.get(media_key)
+
+			if (!media_data) return false
+ 		}
+
+		return true
+	}
+
+	public get target_tweet_id(): string {
+		return this._target_tweet_data.id
+	}
+
 	private _media_url(index: number): string {
 		// console.log('text', this.text)
 
@@ -277,6 +295,20 @@ export class Tweet {
 		// }
 
 		return counts.join('')
+	}
+
+	public get missing_media_data(): boolean {
+		const media_key = this._target_tweet_data.attachments?.media_keys?.[0]
+
+		if (!media_key) return false
+
+		const media_data = this._media_data_map.get(media_key)
+
+		if (!media_data) {
+			//console.log(media_key)
+			return true
+		}
+		return false
 	}
 
 	// public get media_url(): string {
