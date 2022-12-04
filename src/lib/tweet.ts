@@ -297,20 +297,6 @@ export class Tweet {
 		return counts.join('')
 	}
 
-	public get missing_media_data(): boolean {
-		const media_key = this._target_tweet_data.attachments?.media_keys?.[0]
-
-		if (!media_key) return false
-
-		const media_data = this._media_data_map.get(media_key)
-
-		if (!media_data) {
-			//console.log(media_key)
-			return true
-		}
-		return false
-	}
-
 	// public get media_url(): string {
 	// 	const media_keys = this._target_tweet_data.attachments?.media_keys ?? []
 
