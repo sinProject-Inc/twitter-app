@@ -261,15 +261,13 @@ export class Tweet {
 		const counts = []
 
 		if (retweet_count) {
-			counts.push(
-				`<div><span class="count">${retweet_count}</span>&nbsp;件のリツイート</div>`
-			)
+			counts.push(`<div><span class="count">${retweet_count}</span>&nbsp;件のリツイート</div>`)
 		}
-		
+
 		if (quote_count) {
 			counts.push(`<div><span class="count">${quote_count}</span>&nbsp;件の引用リツイート</div>`)
 		}
-		
+
 		if (like_count) {
 			counts.push(`<div><span class="count">${like_count}</span>&nbsp;件のいいね</div>`)
 		}

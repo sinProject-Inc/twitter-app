@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Like from '$lib/icons/like.svelte'
+	import Loading from '$lib/icons/loading.svelte'
 	import Reply from '$lib/icons/reply.svelte'
 	import Retweet from '$lib/icons/retweet.svelte'
 	import RetweetSmall from '$lib/icons/retweet_small.svelte'
@@ -7,21 +8,50 @@
 	import UpArrow from '$lib/icons/up_arrow.svelte'
 	import { Tweet } from '$lib/tweet'
 	import { Util } from '$lib/util'
+	import { onMount } from 'svelte'
+	import type { components } from 'twitter-api-sdk/dist/types'
 	import '../app.css'
-	import type { PageData } from './$types'
 
-	export let data: PageData
+	export let post_hint_element: HTMLElement
+	export let post_element: HTMLElement
 
-	// console.log(data.tweets)
+	let tweets_data: components['schemas']['Tweet'][] = []
+	let users_data: components['schemas']['User'][] = []
+	let referenced_tweets_data: components['schemas']['Tweet'][] = []
+	let media_data: components['schemas']['Media'][] = []
 
-	const tweets_data = data.tweets.data || []
-	const users_data = data.tweets.includes?.users || []
-	const referenced_tweets_data = data.tweets.includes?.tweets || []
-	const media_data = data.tweets.includes?.media || []
+	let user_data_map: Map<string, components['schemas']['User']>
+	let referenced_tweets_data_map: Map<string, components['schemas']['Tweet']>
+	let media_data_map: Map<string, components['schemas']['Media']>
 
-	const user_data_map = Util.to_map_by_id(users_data)
-	const referenced_tweets_data_map = Util.to_map_by_id(referenced_tweets_data)
-	const media_data_map = Util.to_map_by_media_key(media_data)
+	let is_loading = false
+
+	async function fetch_home(): Promise<void> {
+		const tweets = await fetch('/api/home')
+
+		if (tweets.status !== 200) {
+			console.log(tweets.body)
+			return
+		}
+
+		const home_data = await tweets.json()
+
+		tweets_data = home_data.data
+		users_data = home_data.includes.users ?? []
+		referenced_tweets_data = home_data.includes.tweets ?? []
+		media_data = home_data.includes.media ?? []
+
+		console.log(tweets_data.length)
+
+		// console.log('home_data', home_data)
+		// console.log('tweets_data', tweets_data)
+		// console.log('referenced_tweets_data', referenced_tweets_data)
+		// console.log('media_data', media_data)
+
+		user_data_map = Util.to_map_by_id(users_data)
+		referenced_tweets_data_map = Util.to_map_by_id(referenced_tweets_data)
+		media_data_map = Util.to_map_by_media_key(media_data)
+	}
 
 	function on_click_tweet(tweet: Tweet): void {
 		const selection = window.getSelection()
@@ -31,9 +61,6 @@
 		}
 	}
 
-	export let post_hint_element: HTMLElement
-	export let post_element: HTMLElement
-
 	function on_input_post_tweet(): void {
 		const exists_post_tweet_text = post_element.innerText !== ''
 
@@ -42,6 +69,14 @@
 
 		post_hint_element.style.visibility = exists_post_tweet_text ? 'hidden' : 'visible'
 	}
+
+	onMount(async () => {
+		if (tweets_data.length === 0) {
+			is_loading = true
+			await fetch_home()
+			is_loading = false
+		}
+	})
 </script>
 
 <svelte:head>
@@ -102,143 +137,149 @@
 				</div>
 			</div>
 
-			<div class="flex_column gap_border">
-				{#each tweets_data as tweet_data}
-					{@const tweet = new Tweet(
-						tweet_data,
-						user_data_map,
-						referenced_tweets_data_map,
-						media_data_map
-					)}
-					<div
-						class="flex_column tweet_container"
-						on:click={() => on_click_tweet(tweet)}
-						on:keypress
-					>
-						{#if tweet.is_retweet}
-							<div class="flex_row align_items_center retweet_row">
-								<div class="flex_row align_items_center avatar_above">
-									<div class="retweet_icon"><RetweetSmall /></div>
+			{#if is_loading}
+				<div style="padding: 16px; display: flex; justify-content: center">
+					<Loading />
+				</div>
+			{:else}
+				<div class="flex_column gap_border">
+					{#each tweets_data as tweet_data}
+						{@const tweet = new Tweet(
+							tweet_data,
+							user_data_map,
+							referenced_tweets_data_map,
+							media_data_map
+						)}
+						<div
+							class="flex_column tweet_container"
+							on:click={() => on_click_tweet(tweet)}
+							on:keypress
+						>
+							{#if tweet.is_retweet}
+								<div class="flex_row align_items_center retweet_row">
+									<div class="flex_row align_items_center avatar_above">
+										<div class="retweet_icon"><RetweetSmall /></div>
+									</div>
+									{tweet.retweet_user_name}さんがリツイートしました
 								</div>
-								{tweet.retweet_user_name}さんがリツイートしました
-							</div>
-						{/if}
-						<div class="flex_row tweet_element">
-							<div class="avatar_container">
-								<a href={tweet.profile_url}>
-									<img class="avatar_icon" src={tweet.profile_image_url} alt="avatar" />
-								</a>
-							</div>
-							<div class="flex_column tweet_body">
-								<div class="flex_column text_column">
-									<div class="flex_row username_row">
-										<div class="name overflow_ellipsis">
-											<a href={tweet.profile_url}>{tweet.name}</a>
+							{/if}
+							<div class="flex_row tweet_element">
+								<div class="avatar_container">
+									<a href={tweet.profile_url}>
+										<img class="avatar_icon" src={tweet.profile_image_url} alt="avatar" />
+									</a>
+								</div>
+								<div class="flex_column tweet_body">
+									<div class="flex_column text_column">
+										<div class="flex_row username_row">
+											<div class="name overflow_ellipsis">
+												<a href={tweet.profile_url}>{tweet.name}</a>
+											</div>
+											<div class="username overflow_ellipsis">
+												<a href={tweet.profile_url}>@{tweet.username}</a>
+											</div>
+											<div>·</div>
+											<div class="time">
+												<a href={tweet.status_url}>
+													<time datetime={tweet.created_at}>{tweet.elapsed_time}</time>
+												</a>
+											</div>
+											<div class="flex_auto" />
+											<div class="action_icon tap_area_container">
+												<div class="tap_area" />
+												<ThreeDot />
+											</div>
 										</div>
-										<div class="username overflow_ellipsis">
-											<a href={tweet.profile_url}>@{tweet.username}</a>
-										</div>
-										<div>·</div>
-										<div class="time">
-											<a href={tweet.status_url}>
-												<time datetime={tweet.created_at}>{tweet.elapsed_time}</time>
-											</a>
-										</div>
-										<div class="flex_auto" />
-										<div class="action_icon tap_area_container">
-											<div class="tap_area" />
-											<ThreeDot />
+										<div dir="auto">
+											{@html tweet.html_text}
 										</div>
 									</div>
-									<div dir="auto">
-										{@html tweet.html_text}
-									</div>
-								</div>
 
-								{#if tweet.media_count === 1}
-									<div class="media_frame">
-										<img alt="画像" src={tweet.media_url_0} class="media" />
-									</div>
-								{:else if tweet.media_count === 2}
-									<div class="media_frame flex_column media_column media_frame_tile">
-										<div class="flex_row media_row">
-											<div class="media_cell">
-												<img alt="画像" src={tweet.media_url_0} class="media" />
-											</div>
-											<div class="media_cell">
-												<img alt="画像" src={tweet.media_url_1} class="media" />
-											</div>
-										</div>
-									</div>
-								{:else if tweet.media_count === 3}
-									<div class="media_frame media_row media_frame_tile">
-										<div class="media_cell">
+									{#if tweet.media_count === 1}
+										<div class="media_frame">
 											<img alt="画像" src={tweet.media_url_0} class="media" />
 										</div>
-										<div class="flex_column media_column">
-											<div class="media_cell">
-												<img alt="画像" src={tweet.media_url_1} class="media" />
-											</div>
-											<div class="media_cell">
-												<img alt="画像" src={tweet.media_url_2} class="media" />
+									{:else if tweet.media_count === 2}
+										<div class="media_frame flex_column media_column media_frame_tile">
+											<div class="flex_row media_row">
+												<div class="media_cell">
+													<img alt="画像" src={tweet.media_url_0} class="media" />
+												</div>
+												<div class="media_cell">
+													<img alt="画像" src={tweet.media_url_1} class="media" />
+												</div>
 											</div>
 										</div>
-									</div>
-								{:else if tweet.media_count === 4}
-									<div class="media_frame flex_column media_column media_frame_tile">
-										<div class="flex_row media_row">
+									{:else if tweet.media_count === 3}
+										<div class="media_frame media_row media_frame_tile">
 											<div class="media_cell">
 												<img alt="画像" src={tweet.media_url_0} class="media" />
 											</div>
-											<div class="media_cell">
-												<img alt="画像" src={tweet.media_url_1} class="media" />
+											<div class="flex_column media_column">
+												<div class="media_cell">
+													<img alt="画像" src={tweet.media_url_1} class="media" />
+												</div>
+												<div class="media_cell">
+													<img alt="画像" src={tweet.media_url_2} class="media" />
+												</div>
 											</div>
 										</div>
-										<div class="flex_row media_row">
-											<div class="media_cell">
-												<img alt="画像" src={tweet.media_url_2} class="media" />
+									{:else if tweet.media_count === 4}
+										<div class="media_frame flex_column media_column media_frame_tile">
+											<div class="flex_row media_row">
+												<div class="media_cell">
+													<img alt="画像" src={tweet.media_url_0} class="media" />
+												</div>
+												<div class="media_cell">
+													<img alt="画像" src={tweet.media_url_1} class="media" />
+												</div>
 											</div>
-											<div class="media_cell">
-												<img alt="画像" src={tweet.media_url_3} class="media" />
+											<div class="flex_row media_row">
+												<div class="media_cell">
+													<img alt="画像" src={tweet.media_url_2} class="media" />
+												</div>
+												<div class="media_cell">
+													<img alt="画像" src={tweet.media_url_3} class="media" />
+												</div>
 											</div>
 										</div>
-									</div>
-								{/if}
+									{/if}
 
-								<div class="flex_row align_items_center action_row">
-									<div class="flex_row align_items_center action">
-										<div class="action_icon tap_area_container">
-											<div class="tap_area" />
-											<Reply />
+									<div class="flex_row align_items_center action_row">
+										<div class="flex_row align_items_center action">
+											<div class="action_icon tap_area_container">
+												<div class="tap_area" />
+												<Reply />
+											</div>
+											<div class="icon_text overflow_ellipsis">{tweet.reply_count}</div>
 										</div>
-										<div class="icon_text overflow_ellipsis">{tweet.reply_count}</div>
-									</div>
-									<div class="flex_row align_items_center action">
-										<div class="action_icon tap_area_container">
-											<div class="tap_area" />
-											<Retweet />
+										<div class="flex_row align_items_center action">
+											<div class="action_icon tap_area_container">
+												<div class="tap_area" />
+												<Retweet />
+											</div>
+											<div class="icon_text overflow_ellipsis">{tweet.retweet_count}</div>
 										</div>
-										<div class="icon_text overflow_ellipsis">{tweet.retweet_count}</div>
-									</div>
-									<div class="flex_row align_items_center action">
-										<div class="action_icon tap_area_container">
-											<div class="tap_area" />
-											<Like />
+										<div class="flex_row align_items_center action">
+											<div class="action_icon tap_area_container">
+												<div class="tap_area" />
+												<Like />
+											</div>
+											<div class="icon_text overflow_ellipsis">{tweet.like_count}</div>
 										</div>
-										<div class="icon_text overflow_ellipsis">{tweet.like_count}</div>
-									</div>
-									<div class="flex_row align_items_center action_up_arrow">
-										<div class="action_icon tap_area_container">
-											<div class="tap_area" />
-											<UpArrow />
+										<div class="flex_row align_items_center action_up_arrow">
+											<div class="action_icon tap_area_container">
+												<div class="tap_area" />
+												<UpArrow />
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				{/each}
-			</div>
+					{/each}
+				</div>
+			{/if}
 		</div>
 	</div>
 	<div />
