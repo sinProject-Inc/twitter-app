@@ -7,6 +7,7 @@
 	import ThreeDot from '$lib/icons/three_dot.svelte'
 	import UpArrow from '$lib/icons/up_arrow.svelte'
 	import { Tweet } from '$lib/tweet'
+	import { TweetUtil } from '$lib/tweet_util'
 	import { Util } from '$lib/util'
 	import { onMount } from 'svelte'
 	import { _, locale, locales } from 'svelte-i18n'
@@ -52,7 +53,14 @@
 		user_data_map = Util.to_map_by_id(users_data)
 		referenced_tweets_data_map = Util.to_map_by_id(referenced_tweets_data)
 
-		await add_missing_media_data()
+		const missing_media_data = await TweetUtil.get_missing_media_data(
+			tweets_data,
+			user_data_map,
+			referenced_tweets_data_map,
+			media_data
+		)
+
+		media_data = media_data.concat(missing_media_data)
 
 		media_data_map = Util.to_map_by_media_key(media_data)
 	}
@@ -72,31 +80,6 @@
 		console.log('"' + post_element.innerText + '"')
 
 		post_hint_element.style.visibility = exists_post_tweet_text ? 'hidden' : 'visible'
-	}
-
-	async function add_missing_media_data(): Promise<void> {
-		const temp_media_data_map = Util.to_map_by_media_key(media_data)
-
-		const tweet_ids_without_media_data = []
-
-		for (const tweet_data of tweets_data) {
-			const tweet = new Tweet(
-				tweet_data,
-				user_data_map,
-				referenced_tweets_data_map,
-				temp_media_data_map
-			)
-
-			if (!tweet.media_data_exists) {
-				tweet_ids_without_media_data.push(tweet.target_tweet_id)
-			}
-		}
-
-		if (tweet_ids_without_media_data.length > 0) {
-			const response = await fetch(`/api/status/${tweet_ids_without_media_data}`)
-			const missing_media_data = await response.json()
-			media_data = media_data.concat(missing_media_data.includes.media)
-		}
 	}
 
 	function save_locale(): void {
@@ -202,7 +185,7 @@
 										<div class="retweet_icon"><RetweetSmall /></div>
 									</div>
 									{$_('name_retweeted', {
-										values: { name: tweet.retweet_user_name }
+										values: { name: tweet.retweet_user_name },
 									})}
 								</div>
 							{/if}
