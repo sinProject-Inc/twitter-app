@@ -8,11 +8,11 @@ enum Roles {
 export const db = new prisma.PrismaClient()
 
 export class Database {
-	public static async upsert_user(twitter_id: string, access_token: string): Promise<User | undefined> {
+	public static async upsert_user(twitter_id: string, access_token: string, refresh_token: string): Promise<User | undefined> {
 		return await db.user.upsert({
 			where: { twitter_id },
-			update: { access_token },
-			create: { twitter_id, access_token, role: { connect: { name: Roles.user } } },
+			update: { access_token, refresh_token },
+			create: { twitter_id, access_token, refresh_token, role: { connect: { name: Roles.user } } },
 		})
 	}
 

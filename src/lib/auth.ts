@@ -1,7 +1,10 @@
-import type { AuthToken, Role, User } from "@prisma/client"
-import type { Cookies } from "@sveltejs/kit"
-import { CookiesManager } from "./cookies_manager"
-import { Database, db } from "./database"
+import { TWITTER_CALLBACK_URL, TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET } from '$env/static/private'
+import type { AuthToken, Role, User } from '@prisma/client'
+import type { Cookies } from '@sveltejs/kit'
+import { _ } from 'svelte-i18n'
+import { auth } from 'twitter-api-sdk'
+import { CookiesManager } from './cookies_manager'
+import { Database, db } from './database'
 
 export class Auth {
 	public static async get_session_lifetime_sec(): Promise<number> {
@@ -94,5 +97,40 @@ export class Auth {
 		if (cookies) {
 			new CookiesManager(cookies).set_session_id(auth_token.token, session_lifetime_sec)
 		}
+	}
+
+	public static get_auth_client(): auth.OAuth2User {
+		return new auth.OAuth2User({
+			client_id: TWITTER_CLIENT_ID,
+			client_secret: TWITTER_CLIENT_SECRET,
+			callback: TWITTER_CALLBACK_URL,
+			scopes: ['tweet.read', 'users.read', 'tweet.write', 'offline.access'],
+		})
+	}
+
+	public static async check_expired_token(twitter_id: string, access_token: string, refresh_token: string): Promise<string> {
+		const auth_client = Auth.get_auth_client()
+
+		auth_client.token = {
+			access_token,
+			refresh_token,
+		}
+
+		if (!auth_client.isAccessTokenExpired()) {
+			console.log('access token is not expired')
+			return access_token
+		}
+
+		console.log('access token is expired')
+
+		const { token } = await auth_client.refreshAccessToken()
+
+		console.log(token)
+
+		if (!token.access_token || !token.refresh_token) return access_token
+
+		await Database.upsert_user(twitter_id, token.access_token, token.refresh_token)
+
+		return token.access_token
 	}
 }

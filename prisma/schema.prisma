@@ -27,14 +27,15 @@ model Role {
 }
 
 model User {
-  id           Int         @id @default(autoincrement())
-  created_at   DateTime    @default(now())
-  updated_at   DateTime    @updatedAt
-  role_id      Int
-  twitter_id   String      @unique
-  access_token String      @unique
-  role         Role        @relation(fields: [role_id], references: [id])
-  auth_token   AuthToken[]
+  id            Int         @id @default(autoincrement())
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
+  role_id       Int
+  twitter_id    String      @unique
+  access_token  String      @unique
+  refresh_token String      @unique
+  role          Role        @relation(fields: [role_id], references: [id])
+  auth_token    AuthToken[]
 }
 
 model AuthToken {
