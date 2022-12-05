@@ -9,6 +9,7 @@
 	import { Tweet } from '$lib/tweet'
 	import { Util } from '$lib/util'
 	import { onMount } from 'svelte'
+	import { _, locale, locales } from 'svelte-i18n'
 	import type { components } from 'twitter-api-sdk/dist/types'
 	import '../app.css'
 
@@ -98,6 +99,10 @@
 		}
 	}
 
+	function save_locale(): void {
+		localStorage.setItem('locale', $locale ?? '')
+	}
+
 	onMount(async () => {
 		if (tweets_data.length === 0) {
 			is_loading = true
@@ -105,15 +110,23 @@
 			is_loading = false
 		}
 	})
+
+	console.log($locale)
 </script>
 
 <svelte:head>
-	<title>Home / Twitter App</title>
+	<title>{$_('latest_tweets')} / Twitter App</title>
 </svelte:head>
 
 <form action="/sign_out" method="POST">
-	<button type="submit">Sign out</button>
+	<button type="submit">{$_('sign_out')}</button>
 </form>
+
+<select bind:value={$locale} on:change={save_locale}>
+	{#each $locales as locale}
+		<option value={locale}>{locale}</option>
+	{/each}
+</select>
 
 <br />
 
@@ -130,7 +143,7 @@
 						style="position: absolute; top: 2px;"
 					/>
 				</div>
-				最新ツイート
+				{$_('latest_tweets')}
 				<div class="flex_auto" />
 				<div class="header_icon tap_area_container">
 					<div class="tap_area" />
@@ -150,7 +163,7 @@
 				</div>
 				<div class="flex_auto flex_column gap_border">
 					<div class="post_body_container">
-						<div class="post_hint" bind:this={post_hint_element}>いまどうしてる？</div>
+						<div class="post_hint" bind:this={post_hint_element}>{$_('whats_happening')}</div>
 						<div
 							class="post_element"
 							bind:this={post_element}
@@ -160,7 +173,7 @@
 					</div>
 					<div class="flex_row align_items_center padding_top_16">
 						<div class="flex_auto" />
-						<a href="/api/post" class="button">ツイートする</a>
+						<a href="/api/post" class="button">{$_('do_tweet')}</a>
 					</div>
 				</div>
 			</div>
@@ -188,7 +201,9 @@
 									<div class="flex_row align_items_center avatar_above">
 										<div class="retweet_icon"><RetweetSmall /></div>
 									</div>
-									{tweet.retweet_user_name}さんがリツイートしました
+									{$_('name_retweeted', {
+										values: { name: tweet.retweet_user_name }
+									})}
 								</div>
 							{/if}
 							<div class="flex_row tweet_element">

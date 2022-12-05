@@ -14,6 +14,7 @@
 	},
 	"devDependencies": {
 		"@playwright/test": "1.28.1",
+		"@rollup/plugin-json": "^5.0.2",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-node": "^1.0.0-next.101",
 		"@sveltejs/kit": "next",
@@ -35,6 +36,7 @@
 	"type": "module",
 	"dependencies": {
 		"@prisma/client": "^4.7.0",
+		"svelte-i18n": "^3.6.0",
 		"twitter-api-sdk": "^1.2.1"
 	}
 }

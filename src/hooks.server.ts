@@ -1,10 +1,14 @@
 import { Auth } from '$lib/auth'
 import { CookiesManager } from '$lib/cookies_manager'
 import type { Handle } from '@sveltejs/kit'
+// import { locale } from 'svelte-i18n'
 
 // export const handle: Handle = async ({ event, resolve }) => resolve(event)
 
 export const handle: Handle = async ({ event, resolve }) => {
+	// const lang = event.request.headers.get('accept-language')?.split(',')[0]
+	// if (lang) locale.set(lang)
+
 	const cookiesManager = new CookiesManager(event.cookies) 
 	const session_id = cookiesManager.session_id
 	if (!session_id) return await resolve(event)

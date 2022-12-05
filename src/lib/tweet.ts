@@ -270,33 +270,6 @@ export class Tweet {
 		return this._media_url(3)
 	}
 
-	public get counts_html_text(): string {
-		const retweet_count = this.retweet_count
-		const quote_count = this.quote_count
-		const like_count = this.like_count
-		// const reply_count = this.reply_count
-
-		const counts = []
-
-		if (retweet_count) {
-			counts.push(`<div><span class="count">${retweet_count}</span>&nbsp;件のリツイート</div>`)
-		}
-
-		if (quote_count) {
-			counts.push(`<div><span class="count">${quote_count}</span>&nbsp;件の引用リツイート</div>`)
-		}
-
-		if (like_count) {
-			counts.push(`<div><span class="count">${like_count}</span>&nbsp;件のいいね</div>`)
-		}
-
-		// if (reply_count) {
-		// 	counts.push(`<div><span class="count">${reply_count}</span>&nbsp;件の返信</div>`)
-		// }
-
-		return counts.join('')
-	}
-
 	// public get media_url(): string {
 	// 	const media_keys = this._target_tweet_data.attachments?.media_keys ?? []
 
