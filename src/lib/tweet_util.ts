@@ -2,7 +2,8 @@ import type { components } from 'twitter-api-sdk/dist/types'
 import { Tweet } from "$lib/tweet"
 import { Util } from "$lib/util"
 
-export async function get_missing_media_data(
+export class TweetUtil {
+ 	public static async get_missing_media_data(
 	tweets_data: components['schemas']['Tweet'][],  
 	user_data_map: Map<string, components['schemas']['User']>, 
 	referenced_tweets_data_map: Map<string, components['schemas']['Tweet']>, 
@@ -30,6 +31,7 @@ export async function get_missing_media_data(
 			const missing_media_data = await response.json()
 			return missing_media_data.includes.media
 		}
-
+		
 		return []
 	}
+}

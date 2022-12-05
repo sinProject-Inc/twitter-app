@@ -7,7 +7,7 @@
 	import ThreeDot from '$lib/icons/three_dot.svelte'
 	import UpArrow from '$lib/icons/up_arrow.svelte'
 	import { Tweet } from '$lib/tweet'
-	import { get_missing_media_data } from '$lib/tweet_utils'
+	import { TweetUtil } from '$lib/tweet_util'
 	import { Util } from '$lib/util'
 	import { onMount } from 'svelte'
 	import { _, locale, locales } from 'svelte-i18n'
@@ -53,7 +53,7 @@
 		user_data_map = Util.to_map_by_id(users_data)
 		referenced_tweets_data_map = Util.to_map_by_id(referenced_tweets_data)
 
-		const missing_media_data = await get_missing_media_data(
+		const missing_media_data = await TweetUtil.get_missing_media_data(
 			tweets_data,
 			user_data_map,
 			referenced_tweets_data_map,
