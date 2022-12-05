@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import Analytics from '$lib/icons/analytics.svelte'
 	import LeftArrow from '$lib/icons/left_arrow.svelte'
 	import Like from '$lib/icons/like.svelte'
+	import Loading from '$lib/icons/loading.svelte'
 	import Reply from '$lib/icons/reply.svelte'
 	import Retweet from '$lib/icons/retweet.svelte'
 	import RetweetSmall from '$lib/icons/retweet_small.svelte'
@@ -10,10 +12,9 @@
 	import { Tweet } from '$lib/tweet'
 	import { Util } from '$lib/util'
 	import { onMount } from 'svelte'
+	import { _ } from 'svelte-i18n'
 	import type { components } from 'twitter-api-sdk/dist/types'
 	import '../../../app.css'
-	import { page } from '$app/stores'
-	import Loading from '$lib/icons/loading.svelte'
 
 	let tweet_data: components['schemas']['Tweet']
 	let tweets_data: components['schemas']['Tweet'][] = []
@@ -76,7 +77,7 @@
 					<div class="tap_area" on:click={() => history.back()} on:keydown />
 					<LeftArrow />
 				</div>
-				ツイート
+				{$_('tweet')}
 			</div>
 		</div>
 
@@ -86,12 +87,19 @@
 			</div>
 		{/if}
 		{#if tweet_data}
-			{@const tweet = new Tweet(tweet_data, user_data_map, referenced_tweets_data_map, media_data_map)}
+			{@const tweet = new Tweet(
+				tweet_data,
+				user_data_map,
+				referenced_tweets_data_map,
+				media_data_map
+			)}
 			<div class="element">
 				{#if tweet.is_retweet}
 					<div class="flex_row align_items_center retweet_row">
 						<div class="avatar_above"><div class="retweet_icon"><RetweetSmall /></div></div>
-						{tweet.retweet_user_name}さんがリツイートしました
+						{$_('name_retweeted', {
+							values: { name: tweet.retweet_user_name },
+						})}
 					</div>
 				{/if}
 				<div class="flex_column tweet_element">
@@ -185,10 +193,26 @@
 						<div class="analytics_icon">
 							<Analytics />
 						</div>
-						ツイートアナリティクスを表示
+						{$_('view_tweet_analytics')}
 					</div>
 					<div class="counts_row">
-						{@html tweet.counts_html_text}
+						{#if tweet.retweet_count}
+							<div>
+								<span class="count">{tweet.retweet_count}</span>&nbsp;{$_('count_retweets')}
+							</div>
+						{/if}
+
+						{#if tweet.quote_count}
+							<div>
+								<span class="count">{tweet.quote_count}</span>&nbsp;{$_('count_quotes')}
+							</div>
+						{/if}
+
+						{#if tweet.like_count}
+							<div>
+								<span class="count">{tweet.like_count}</span>&nbsp;{$_('count_likes')}
+							</div>
+						{/if}
 					</div>
 					<div class="action_row">
 						<div class="action" style="text-align: center">
