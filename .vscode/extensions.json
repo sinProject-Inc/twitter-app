@@ -1,0 +1,16 @@
+{
+	"recommendations": [
+		"alefragnani.bookmarks",
+		"dbaeumer.vscode-eslint",
+		"streetsidesoftware.code-spell-checker",
+		"mhutchie.git-graph",
+		"github.vscode-pull-request-github",
+		"lokalise.i18n-ally",
+		"ms-playwright.playwright",
+		"esbenp.prettier-vscode",
+		"prisma.prisma",
+		"svelte.svelte-vscode",
+		"gruntfuggly.todo-tree",
+		"vscode-icons-team.vscode-icons"
+	]
+}
