@@ -15,5 +15,8 @@
 		"sveltejs",
 		"sveltekit",
 		"Upvote"
+	],
+	"i18n-ally.localesPaths": [
+		"src/locales"
 	]
 }
