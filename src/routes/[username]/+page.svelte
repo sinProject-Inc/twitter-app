@@ -4,7 +4,7 @@
 
 <div class="gap_border root_container">
 	<div class="center_container">
-      <div class="header header2">
+      <div class="header header_items_container">
         <div class="header_pic_container">
           <svg viewBox="0 0 24 24" aria-hidden="true"
             ><g><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z" /></g></svg>
@@ -129,22 +129,7 @@
 		font-weight: 700;
 	}
 
-	.top_container {
-		display: flex;
-		flex-direction: row;
-		height: 2000px;
-	}
-
-	.header_container {
-		min-width: 0;
-		width: 600px;
-		margin-left: auto;
-		margin-right: auto;
-		border-left-width: 1px;
-		border-right-width: 1px;
-	}
-
-	.header2 {
+	.header_items_container {
 		display: flex;
 		padding-left: 0.5rem;
 		padding-right: 0.5rem;
