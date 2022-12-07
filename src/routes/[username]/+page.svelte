@@ -14,7 +14,7 @@
           <div class="header_tweet_count">8.9万 件のツイート</div>
         </div>
       </div>
-      <div class="header_image_container" />
+      <div class="banner_container" />
       <div class="profile_container">
         <div class="pic_container" />
         <div class="buttons_container">
@@ -164,7 +164,7 @@
 		color: rgb(83, 100, 113);
 	}
 
-	.header_image_container {
+	.banner_container {
 		width: 100%;
 		height: 200px;
 	}
