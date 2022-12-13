@@ -307,12 +307,6 @@
 		font-weight: 700;
 	}
 
-	.follow_details_mutuals {
-		margin-bottom: 1.25rem;
-		color: 14px;
-		color: rgb(83, 100, 113);
-	}
-
 	.tab_container {
 		display: flex;
 		text-align: center;
