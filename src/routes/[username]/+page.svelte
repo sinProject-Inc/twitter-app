@@ -9,6 +9,7 @@
 	import LocationPin from '$lib/icons/location_pin.svelte'
 	import Link from '$lib/icons/link.svelte'
 	import Calendar from '$lib/icons/calendar.svelte'
+	import TweetList from '$lib/components/tweet_list.svelte'
 
 	let user_data: components['schemas']['User']
 	let is_loading = false
@@ -139,6 +140,7 @@
 					</div>
 				</div>
 			</div>
+			<TweetList api_path="/api/user/{user_data.id}/tweets" />
 		</div>
 	</div>
 {/if}
